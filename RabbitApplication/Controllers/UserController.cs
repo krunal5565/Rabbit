@@ -114,7 +114,7 @@ namespace FundaClearApp.Controllers
         //    return RedirectToAction("Login", "Account");
         //}
 
-        public ActionResult Signup()
+        public ActionResult Register()
         {
             return View();
         }

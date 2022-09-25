@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Projects\\Training\\RabbitApplication\\RabbitApplication\\RabbitApplication.csproj": {}
+    "D:\\Alkermes\\Rabbit\\RabbitApplication\\RabbitApplication.csproj": {}
   },
   "projects": {
-    "D:\\Projects\\Training\\RabbitApplication\\RabbitApplication\\RabbitApplication.csproj": {
+    "D:\\Alkermes\\Rabbit\\RabbitApplication\\RabbitApplication.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Projects\\Training\\RabbitApplication\\RabbitApplication\\RabbitApplication.csproj",
+        "projectUniqueName": "D:\\Alkermes\\Rabbit\\RabbitApplication\\RabbitApplication.csproj",
         "projectName": "RabbitApplication",
-        "projectPath": "D:\\Projects\\Training\\RabbitApplication\\RabbitApplication\\RabbitApplication.csproj",
+        "projectPath": "D:\\Alkermes\\Rabbit\\RabbitApplication\\RabbitApplication.csproj",
         "packagesPath": "C:\\Users\\krunal.naik\\.nuget\\packages\\",
-        "outputPath": "D:\\Projects\\Training\\RabbitApplication\\RabbitApplication\\obj\\",
+        "outputPath": "D:\\Alkermes\\Rabbit\\RabbitApplication\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -61,11 +61,13 @@
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[3.1.22, )"
+              "version": "[3.1.25, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
-              "version": "[3.1.22, )"
+              "version": "[3.1.25, )"
             },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
