@@ -1,0 +1,71 @@
+﻿
+
+
+<div class="container">
+    <br />
+    <div style="width:100%; margin:0 auto;">
+        <div style="background-color: #3276b1;color:white; padding:10px">
+            Book Search Criteria
+        </div>
+        <div style="border: 1px solid #3276b1;padding:20px">
+            Search by Bar Code   <input type="checkbox" id="chkBarcode" onclick="chkBarcode()" />
+            <div class="row">
+                <div class="col-md-2">
+                    Book Bar Code
+                </div>
+                <div class="col-md-4">
+                    <input class="form-control" disabled  id="txtBarcode" type="text" />
+                </div>
+            </div>
+            <div class="row" style="margin-top:10px">
+                <div class="col-md-2">
+                    Book Author
+                </div>
+                <div class="col-md-4">
+                    <input class="form-control" id="txtAuthor" type="text" />
+                </div>
+                <div class="col-md-2">
+                    Book Category
+                </div>
+                <div class="col-md-4">
+                    <input class="form-control" id="txtCategory" type="text" />
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12 pull-right" style="margin-top:10px;">
+                    <a  class="pull-right" onclick="GetBookDetails()" style="color: white; padding: 5px; background-color: #3276b1">Get Book Details</a>
+                    <br />
+                </div>
+            </div>
+        </div>
+        </div>
+        <div id="dvBookDetails">
+
+        </div>
+    </div>
+
+<script>
+
+    function chkBarcode() {
+        if ($('#chkBarcode').is(":checked"))
+        {
+            $("#txtBarcode").removeAttr('disabled');
+            $("#txtAuthor").attr('disabled', true);
+            $("#txtCategory").attr('disabled', true);
+        }
+        else {
+            $("#txtAuthor").removeAttr('disabled');
+            $("#txtCategory").removeAttr('disabled');
+
+            $("#txtBarcode").attr('disabled', true);
+        }
+      
+        
+    }
+
+    function GetBookDetails() {
+        $("#dvBookDetails").load('/books/GetBookDetails?id=2');
+    }
+</script>
