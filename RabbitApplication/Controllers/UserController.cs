@@ -1,4 +1,5 @@
 ﻿using FundaClear.Business;
+using FundaClearApp.Business;
 using FundaClearApp.Business.BusinessModel;
 using FundaClearApp.Utilities;
 using Microsoft.AspNetCore.Authentication;
@@ -7,8 +8,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using RabbitApplication.Data;
+using RabbitApplication.Model;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FundaClearApp.Controllers
 {
@@ -16,15 +20,22 @@ namespace FundaClearApp.Controllers
     {
         public string connectionString;
 
-        private readonly ILogger<UserController> _logger;
-        private readonly IConfiguration configuration;
+        private readonly ApplicationDbContext _context;
 
-        public UserController(ILogger<UserController> logger, IConfiguration iConfiguration)
+        public UserController(ApplicationDbContext context)
         {
-            _logger = logger;
-            connectionString = iConfiguration.GetConnectionString("DefaultConnection");// ConnectionHelper.GetConnectionString();
-            configuration = iConfiguration;
+            _context = context;
         }
+
+        //private readonly ILogger<UserController> _logger;
+        //private readonly IConfiguration configuration;
+
+        //public UserController(ILogger<UserController> logger, IConfiguration iConfiguration)
+        //{
+        //    _logger = logger;
+        //    connectionString = iConfiguration.GetConnectionString("DefaultConnection");// ConnectionHelper.GetConnectionString();
+        //    configuration = iConfiguration;
+        //}
 
         public ActionResult Index()
         {
@@ -114,8 +125,29 @@ namespace FundaClearApp.Controllers
         //    return RedirectToAction("Login", "Account");
         //}
 
-        public ActionResult Register()
+        [HttpPost]
+        public async Task<IActionResult> Register(UserModel model)
         {
+
+            if (ModelState.IsValid)
+            {
+                UserDetails dbUser = new UserDetails();
+                dbUser.fname = model.fname;
+                dbUser.lname = model.lname;
+                dbUser.email = model.email;
+                dbUser.mobile = model.mobile;
+                dbUser.updateddate = model.updateddate;
+               
+                dbUser.username = model.username;
+                dbUser.createddate = DateTime.Now;
+                dbUser.updateddate = DateTime.Now;
+
+                _context.Add(dbUser);
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
             return View();
         }
 
