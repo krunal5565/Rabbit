@@ -439,3 +439,4 @@ D:\Projects\Training\RabbitApplication\RabbitApplication\bin\Debug\netcoreapp3.1
 D:\Projects\Training\RabbitApplication\RabbitApplication\obj\Debug\netcoreapp3.1\RabbitApplication.Views.pdb
 D:\Projects\Training\RabbitApplication\RabbitApplication\obj\Debug\netcoreapp3.1\RabbitApplication.csproj.CopyComplete
 D:\Projects\Training\RabbitApplication\RabbitApplication\obj\Debug\netcoreapp3.1\RabbitApplication.genruntimeconfig.cache
+D:\Projects\Training\RabbitApplication\RabbitApplication\obj\Debug\netcoreapp3.1\RabbitApplication.csproj.AssemblyReference.cache
