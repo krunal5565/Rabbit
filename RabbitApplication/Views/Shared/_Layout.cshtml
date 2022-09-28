@@ -38,6 +38,13 @@
 
     <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+
+
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
     <style>
 
 
@@ -153,109 +160,28 @@
             </li>
             <hr class="sidebar-divider">
             <div class="sidebar-heading">
-                Catalog Management
+                Job Profile
             </div>
+           
             <li class="nav-item">
-                <a class="nav-link collapsed" href="@Url.Action("Dashboard" , "Account")" data-target="#collapseForm1" aria-expanded="true"
+                <a class="nav-link collapsed" href="@Url.Action("Index" , "JobProfile")" data-target="#collapseForm1" aria-expanded="true"
                    aria-controls="collapseForm">
                     <i class="fab fa-fw fa-wpforms"></i>
-                    <span>Type</span>
+                    <span>Job Profile</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="@Url.Action("Dashboard" , "Account")" data-target="#collapseForm1" aria-expanded="true"
-                   aria-controls="collapseForm">
-                    <i class="fab fa-fw fa-wpforms"></i>
-                    <span>Publisher</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="@Url.Action("Dashboard" , "Account")" data-target="#collapseForm1" aria-expanded="true"
-                   aria-controls="collapseForm">
-                    <i class="fab fa-fw fa-wpforms"></i>
-                    <span>Rack Number</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="@Url.Action("Index" , "Supplier")" data-target="#collapseForm1" aria-expanded="true"
-                   aria-controls="collapseForm">
-                    <i class="fab fa-fw fa-wpforms"></i>
-                    <span>Supplier</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="@Url.Action("Catalog" , "Books")" data-target="#collapseForm1" aria-expanded="true"
-                   aria-controls="collapseForm">
-                    <i class="fab fa-fw fa-wpforms"></i>
-                    <span>Catalog</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="@Url.Action("Dashboard" , "Account")" data-target="#collapseForm1" aria-expanded="true"
-                   aria-controls="collapseForm">
-                    <i class="fab fa-fw fa-wpforms"></i>
-                    <span>Author</span>
-                </a>
-            </li>
-            <hr class="sidebar-divider">
+           <hr class="sidebar-divider">
             <div class="sidebar-heading">
-                Circulation Management
+             Candidates
             </div>
-
-
-
-
-
-
-
+           
             <li class="nav-item">
-                <a class="nav-link collapsed" href="@Url.Action("Borrow" , "Books")" data-target="#collapseForm1" aria-expanded="true"
+                <a class="nav-link collapsed" href="@Url.Action("Index" , "Candidate")" data-target="#collapseForm1" aria-expanded="true"
                    aria-controls="collapseForm">
                     <i class="fab fa-fw fa-wpforms"></i>
-                    <span>Book Inward</span>
+                    <span>Candidates</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="@Url.Action("Dashboard" , "Account")" data-target="#collapseForm1" aria-expanded="true"
-                   aria-controls="collapseForm">
-                    <i class="fab fa-fw fa-wpforms"></i>
-                    <span>Book Return</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="@Url.Action("Dashboard" , "Account")" data-target="#collapseForm1" aria-expanded="true"
-                   aria-controls="collapseForm">
-                    <i class="fab fa-fw fa-wpforms"></i>
-                    <span>Book Damage</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="@Url.Action("Dashboard" , "Account")" data-target="#collapseForm1" aria-expanded="true"
-                   aria-controls="collapseForm">
-                    <i class="fab fa-fw fa-wpforms"></i>
-                    <span>Book Fine</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="@Url.Action("BorrowedBooks" , "Books")" data-target="#collapseForm1" aria-expanded="true"
-                   aria-controls="collapseForm">
-                    <i class="fab fa-fw fa-wpforms"></i>
-                    <span>Issued Books</span>
-                </a>
-            </li>
-            <hr class="sidebar-divider">
-            <div class="sidebar-heading">
-                Users
-            </div>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="@Url.Action("Index" , "User")" data-target="#collapseForm1" aria-expanded="true"
-                   aria-controls="collapseForm">
-                    <i class="fab fa-fw fa-wpforms"></i>
-                    <span>Students</span>
-                </a>
-            </li>
-            <hr class="sidebar-divider">
-
         </ul>
         <!-- Sidebar -->
         <div id="content-wrapper" class="d-flex flex-column" style="overflow-y:auto;">
@@ -277,7 +203,7 @@
                                 </span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="@Url.Action("Logout","account")">
+                                <a class="dropdown-item" href="@Url.Action("Logout","candidate")">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>

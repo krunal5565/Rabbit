@@ -1,16 +1,4 @@
-﻿namespace RabbitApplication.Model
+﻿namespace RabbitApplication.Entity
 {
-    public class LoginKrunal
-    {
-        public string username { get; set; }
-        public string password { get; set; }
-        public long id { get; set; }
-    }
-
-    public class LoginRachita
-    {
-        public string username { get; set; }
-        public string password { get; set; }
-        public long id { get; set; }
-    }
+    
 }

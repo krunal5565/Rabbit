@@ -1,0 +1,60 @@
+﻿@model IEnumerable<RabbitApplication.Models.JobProfileModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<p>
+    <a asp-action="Create" class="btn btn-primary pull-right" style="margin-right:20px">Create New</a>
+    &nbsp; 
+</p>
+<br/><br/>
+<table class="table">
+    <thead>
+        <tr>
+         
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumberOfPositions)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+         
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+          
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberOfPositions)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate.Date)
+            </td>
+       
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.JobProfileId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.JobProfileId">Details</a> |
+             @*   <a asp-action="Delete" asp-route-id="@item.JobProfileId">Delete</a>*@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

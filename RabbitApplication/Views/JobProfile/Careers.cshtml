@@ -1,0 +1,53 @@
+﻿@model IEnumerable<RabbitApplication.Models.JobProfileModel>
+
+@{
+	ViewData["Title"] = "Careers";
+	Layout = "~/Views/Shared/_CandidateLayout.cshtml";
+}
+
+<h1>Careers</h1>
+
+
+<br />
+<br />
+
+@foreach (var item in Model)
+{
+	<table style="width:100%">
+		<tr>
+			<td>
+				<div style="border:1px solid #ebf0f6;background-color: #ebf0f6; border-radius:4px; padding:15px;margin:10px;">
+					<table style="width:100%;">
+						<tr>
+							<td>
+								<b>@Html.DisplayFor(modelItem => item.Name)</b>
+								<br />
+								@Html.Raw(item.ShortDescription)
+								<br />
+								<br />
+							</td>
+							<td>
+								<span style="float:right">
+									<a href="@Url.Action("CareersDetails","JobProfile", new {id = item.JobProfileId})" class="btn-sm btn-primary pull-right"> View Details </a>
+									&nbsp
+
+									@if(User.Identity.IsAuthenticated)
+									{
+											<a href="@Url.Action("Details", "Candidate", new {@id = item.JobProfileId})" class="btn-sm btn-primary pull-right"> Apply </a>
+									}
+									else
+									{
+										<a href="@Url.Action("Login", "Candidate")" class="btn-sm btn-primary pull-right"> Apply </a>
+									}
+								</span>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</td>
+
+		</tr>
+	</table>
+}
+
+

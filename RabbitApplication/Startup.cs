@@ -1,10 +1,13 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RabbitApplication.Data;
+using System;
 
 namespace RabbitApplication
 {
@@ -27,7 +30,28 @@ namespace RabbitApplication
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
+          
             services.AddRazorPages();
+
+            services.AddControllersWithViews();
+            services.AddDistributedMemoryCache(); //This way ASP.NET Core will use a Memory Cache to store session variables
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromDays(1); // It depends on user requirements.
+            });
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => false;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = new PathString("/Candidate/Login");
+                //other properties
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,7 +73,8 @@ namespace RabbitApplication
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseCookiePolicy();
+            app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
 

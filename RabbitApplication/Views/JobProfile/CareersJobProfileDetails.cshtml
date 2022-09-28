@@ -1,0 +1,35 @@
+﻿@model RabbitApplication.Models.JobProfileModel
+
+@{
+	ViewData["Title"] = "Details";
+	Layout = "~/Views/Shared/_CandidateLayout.cshtml";
+}
+
+
+<div style="padding-left:50px">
+	<h4>JobProfile Details</h4>
+	<hr />
+	<div style="border:1px solid #ebf0f6;background-color: #ebf0f6; border-radius:4px; padding:15px;margin:10px;">
+		<dl class="row">
+			<dd class="col-sm-10">
+				<b> @Html.DisplayFor(model => model.Name) </b>
+				<br />
+				Number of Positions : @Html.DisplayFor(model => model.NumberOfPositions)
+			</dd>
+			<br />
+			<br />
+			<hr />
+		</dl>
+
+		<dl class="row" style="border-top:5px solid white">
+			<dd class="col-sm-10">
+				<br/>
+				<u>Description</u> <br />
+				@Html.Raw(Model.Description)
+	</div>
+
+
+	<div>
+
+		<a asp-action="Careers">Back to List</a>
+	</div>

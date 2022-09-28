@@ -1,14 +1,14 @@
 ﻿using System;
 
-namespace RabbitApplication.Model
+namespace RabbitApplication.Entity
 {
-    public class JobProfileType
-    {
-        public long id { get; set; }
-        public string name { get; set; }
-        public string description { get; set; }
-        public DateTime createddate { get; set; }
-        public DateTime updateddate { get; set; }
-        public bool isactive { get; set; }
-    }
+    //public class JobProfileType
+    //{
+    //    public long id { get; set; }
+    //    public string name { get; set; }
+    //    public string description { get; set; }
+    //    public DateTime createddate { get; set; }
+    //    public DateTime updateddate { get; set; }
+    //    public bool isactive { get; set; }
+    //}
 }

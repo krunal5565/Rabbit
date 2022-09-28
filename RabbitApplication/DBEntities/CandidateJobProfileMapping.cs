@@ -1,15 +1,17 @@
 ﻿using System;
 
-namespace RabbitApplication.Model
+namespace RabbitApplication.Entity
 {
     public class CandidateJobProfileMapping
     {
-        public long id { get; set; }
-        public UserDetails candidateid { get; set; }
-        public JobProfile jobprofile { get; set; }
-        public string description { get; set; }
-        public DateTime createddate { get; set; }
-        public DateTime updateddate { get; set; }
-        public bool isactive { get; set; }
+        public long Id { get; set; }
+        public string CandidateJobProfileMappingId { get; set; }
+        public Candidate Candidateid { get; set; }
+        public JobProfile JobProfile { get; set; }
+        public DateTime JobAppliedDate { get; set; }
+        public string Description { get; set; }
+        public DateTime Createddate { get; set; }
+        public DateTime Updateddate { get; set; }
+        public bool IsActive { get; set; }
     }
 }

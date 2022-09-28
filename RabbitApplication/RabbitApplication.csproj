@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.9" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.22" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.22" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.22" />
@@ -22,6 +23,8 @@
   <ItemGroup>
     <Folder Include="Areas\NewFolder\" />
     <Folder Include="Data\Migrations\" />
+    <Folder Include="Views\NewFolder\" />
+    <Folder Include="Views\UserDetails\" />
   </ItemGroup>
 
 </Project>
