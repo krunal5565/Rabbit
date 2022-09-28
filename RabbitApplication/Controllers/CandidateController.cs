@@ -25,9 +25,16 @@ namespace FundaClearApp.Controllers
             _context = context;
         }
 
+     
+        
+        public IActionResult JobApplySuccess()
+        {
+            return View();
 
+        }
+        
         [HttpPost]
-        public IActionResult Save(CandidateModel model)
+        public IActionResult JobApply(CandidateModel model)
         {
             string emailId = User.Identity.Name;
             Candidate objCandidate =  _context.Candidate.Where(x => x.Email == emailId).FirstOrDefault();
@@ -57,10 +64,9 @@ namespace FundaClearApp.Controllers
 
             _context.CandidateJobProfileMapping.Add(objCandidateJobProfileMapping);
 
-
             _context.SaveChanges();
 
-            return RedirectToAction("details", "Candidate");
+            return RedirectToAction("JobApplySuccess", "Candidate");
         }
 
 
@@ -106,7 +112,13 @@ namespace FundaClearApp.Controllers
 
                 foreach (Candidate objCandidate in entityCandidateList)
                 {
-                    objCandidateModelList.Add(ApplicationHelper.BindCandidateHelperData(objCandidate));
+                    CandidateModel objCandidateModel = ApplicationHelper.BindCandidateHelperData(objCandidate);
+                    
+                    CandidateJobProfileMapping objCandidateJobProfileMapping = _context.CandidateJobProfileMapping.Where(x => x.Candidateid == objCandidate.CandidateId).FirstOrDefault();
+
+                    objCandidateModel.JobProfileName = _context.JobProfile.Where(x => x.JobProfileId == objCandidateJobProfileMapping.JobProfileId).FirstOrDefault().Name;
+
+                    objCandidateModelList.Add(objCandidateModel);
                 }
             }
             catch (Exception ex)

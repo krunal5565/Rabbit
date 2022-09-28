@@ -7,6 +7,7 @@ namespace RabbitApplication.Models
         public long Id { get; set; }
         public string CandidateId { get; set; }
         public string JobProfileId { get; set; }
+        public string JobProfileName { get; set; }
         public string Title { get; set; }
         public string Fname { get; set; }
         public string Mname { get; set; }

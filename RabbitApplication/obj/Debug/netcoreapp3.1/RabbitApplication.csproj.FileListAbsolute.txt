@@ -452,7 +452,6 @@ D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\RabbitApplication.d
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\RabbitApplication.pdb
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\RabbitApplication.genruntimeconfig.cache
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\RabbitApplication.csproj.AssemblyReference.cache
-D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\JobProfile\TextEditor.cshtml.g.cs
 D:\Alkermes\Rabbit\RabbitApplication\bin\Debug\netcoreapp3.1\System.Web.Mvc.dll
 D:\Alkermes\Rabbit\RabbitApplication\bin\Debug\netcoreapp3.1\System.Web.Razor.dll
 D:\Alkermes\Rabbit\RabbitApplication\bin\Debug\netcoreapp3.1\System.Web.Helpers.dll
@@ -462,3 +461,4 @@ D:\Alkermes\Rabbit\RabbitApplication\bin\Debug\netcoreapp3.1\System.Web.WebPages
 D:\Alkermes\Rabbit\RabbitApplication\bin\Debug\netcoreapp3.1\Microsoft.Web.Infrastructure.dll
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\JobProfile\CareersJobProfileDetails.cshtml.g.cs
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\Account\Dashboard.cshtml.g.cs
+D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\Candidate\JobApplySuccess.cshtml.g.cs
