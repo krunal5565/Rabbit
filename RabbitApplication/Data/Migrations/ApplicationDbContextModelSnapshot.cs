@@ -215,7 +215,7 @@ namespace RabbitApplication.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("RabbitApplication.Model.Candidate", b =>
+            modelBuilder.Entity("RabbitApplication.Entity.Candidate", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -281,7 +281,7 @@ namespace RabbitApplication.Migrations
                     b.ToTable("Candidate");
                 });
 
-            modelBuilder.Entity("RabbitApplication.Model.CandidateFiles", b =>
+            modelBuilder.Entity("RabbitApplication.Entity.CandidateFile", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -317,7 +317,7 @@ namespace RabbitApplication.Migrations
                     b.ToTable("CandidateFiles");
                 });
 
-            modelBuilder.Entity("RabbitApplication.Model.CandidateJobProfileMapping", b =>
+            modelBuilder.Entity("RabbitApplication.Entity.CandidateJobProfileMapping", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -327,8 +327,8 @@ namespace RabbitApplication.Migrations
                     b.Property<string>("CandidateJobProfileMappingId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long?>("CandidateidId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("Candidateid")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Createddate")
                         .HasColumnType("datetime2");
@@ -342,22 +342,18 @@ namespace RabbitApplication.Migrations
                     b.Property<DateTime>("JobAppliedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<long?>("JobProfileId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("JobProfileId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Updateddate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CandidateidId");
-
-                    b.HasIndex("JobProfileId");
-
                     b.ToTable("CandidateJobProfileMapping");
                 });
 
-            modelBuilder.Entity("RabbitApplication.Model.JobProfile", b =>
+            modelBuilder.Entity("RabbitApplication.Entity.JobProfile", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -396,15 +392,15 @@ namespace RabbitApplication.Migrations
                     b.ToTable("JobProfile");
                 });
 
-            modelBuilder.Entity("RabbitApplication.Model.LoginDetails", b =>
+            modelBuilder.Entity("RabbitApplication.Entity.LoginDetails", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long?>("CandidateId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("CandidateId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -478,17 +474,6 @@ namespace RabbitApplication.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("RabbitApplication.Model.CandidateJobProfileMapping", b =>
-                {
-                    b.HasOne("RabbitApplication.Model.Candidate", "Candidateid")
-                        .WithMany()
-                        .HasForeignKey("CandidateidId");
-
-                    b.HasOne("RabbitApplication.Model.JobProfile", "JobProfile")
-                        .WithMany()
-                        .HasForeignKey("JobProfileId");
                 });
 #pragma warning restore 612, 618
         }

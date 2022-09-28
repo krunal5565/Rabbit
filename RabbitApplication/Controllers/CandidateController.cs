@@ -27,11 +27,11 @@ namespace FundaClearApp.Controllers
 
 
         [HttpPost]
-        public ViewResult Save(CandidateModel model)
+        public IActionResult Save(CandidateModel model)
         {
-            Candidate objCandidate = new Candidate();
+            string emailId = User.Identity.Name;
+            Candidate objCandidate =  _context.Candidate.Where(x => x.Email == emailId).FirstOrDefault();
             objCandidate.Fname = model.Fname;
-            objCandidate.Id = model.Id;
             objCandidate.CandidateId = model.CandidateId;
             objCandidate.Lname = model.Lname;
             objCandidate.Mname = model.Mname;
@@ -43,20 +43,47 @@ namespace FundaClearApp.Controllers
             objCandidate.AlternateMobile = model.AlternateMobile;
             objCandidate.Gender = model.Gender;
             objCandidate.DOB = model.DOB;
+            objCandidate.Caste = model.Caste;
             objCandidate.City = model.City;
             objCandidate.Pincode = model.Pincode;
-
+          
             _context.Candidate.Update(objCandidate);
+
+            CandidateJobProfileMapping objCandidateJobProfileMapping = new CandidateJobProfileMapping();
+            objCandidateJobProfileMapping.CandidateJobProfileMappingId = Guid.NewGuid().ToString();
+            objCandidateJobProfileMapping.JobProfileId = model.JobProfileId;
+            objCandidateJobProfileMapping.Candidateid = model.CandidateId;
+            objCandidateJobProfileMapping.JobAppliedDate = DateTime.Now;
+
+            _context.CandidateJobProfileMapping.Add(objCandidateJobProfileMapping);
+
 
             _context.SaveChanges();
 
-            return View();
+            return RedirectToAction("details", "Candidate");
         }
 
 
-        public ViewResult Details()
+        public ViewResult Details(string id)
         {
-            return View();
+            CandidateModel objCandidateModel = new CandidateModel();
+
+            try
+            {
+                string emailId = User.Identity.Name;
+
+               Candidate entityCandidate = _context.Candidate.Where(x=>x.Email == emailId).FirstOrDefault();
+
+                objCandidateModel = ApplicationHelper.BindCandidateHelperData(entityCandidate);
+                objCandidateModel.JobProfileId = id;
+
+
+            }
+            catch(Exception ex)
+            {
+
+            }
+            return View(objCandidateModel);
         }
 
         public ActionResult Grid()
@@ -134,7 +161,7 @@ namespace FundaClearApp.Controllers
 
                     var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-                    if (dbLoginDetails.CandidateId > 0)
+                    if (!string.IsNullOrEmpty(dbLoginDetails.CandidateId))
                     {
                         return RedirectToAction("index", "Home");
                     }
@@ -193,7 +220,7 @@ namespace FundaClearApp.Controllers
                 dbLoginDetails.Password = model.Password;
                 dbLoginDetails.CreatedDate = DateTime.Now;
                 dbLoginDetails.UpdatedDate = DateTime.Now;
-                dbLoginDetails.CandidateId = dbUser.Id;
+                dbLoginDetails.CandidateId = dbUser.CandidateId;
                 dbLoginDetails.LoginDetailsId = Guid.NewGuid().ToString();
 
                 _context.Add(dbLoginDetails);

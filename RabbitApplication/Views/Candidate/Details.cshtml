@@ -11,6 +11,8 @@
       <h4>Candidate Details</h4>
             <hr>
   <div class="form-row">
+      @Html.HiddenFor(m=>m.CandidateId)
+       @Html.HiddenFor(m=>m.JobProfileId)
     <div class="form-group col-md-3">
       <label for="inputEmail4">Title</label>
       @Html.TextBoxFor(m=>m.Title, new { @class = "form-control"})

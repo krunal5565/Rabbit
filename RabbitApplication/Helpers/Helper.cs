@@ -49,6 +49,9 @@ namespace RabbitApplication.Helpers
             if (candidate != null)
             {
                 objCandidateModel.AlternateMobile = candidate.AlternateMobile;
+                objCandidateModel.Fname = candidate.Fname;
+                objCandidateModel.Lname = candidate.Lname;
+                objCandidateModel.Mname = candidate.Mname;
                 objCandidateModel.CandidateId = candidate.CandidateId;
                 objCandidateModel.Mobile = candidate.Mobile;
                 objCandidateModel.IsActive = candidate.IsActive;

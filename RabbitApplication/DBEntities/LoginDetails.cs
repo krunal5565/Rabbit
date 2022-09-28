@@ -8,7 +8,7 @@ namespace RabbitApplication.Entity
         public string LoginDetailsId { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        public long? CandidateId { get; set; }
+        public string CandidateId { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
         public bool IsActive { get; set; }
