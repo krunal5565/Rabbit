@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\NewFolder\" />
-    <Folder Include="Data\Migrations\" />
     <Folder Include="Views\NewFolder\" />
     <Folder Include="Views\UserDetails\" />
   </ItemGroup>

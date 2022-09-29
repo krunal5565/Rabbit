@@ -5,7 +5,8 @@ namespace RabbitApplication.Entity
     public class CandidateFile
     {
         public long Id { get; set; }
-        public string CandiateFileId { get; set; }
+        public string CandidateFileId { get; set; }
+        public string CandidateId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string FileType { get; set; }

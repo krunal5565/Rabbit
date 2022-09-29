@@ -82,7 +82,8 @@ namespace RabbitApplication.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CandiateFileId = table.Column<string>(nullable: true),
+                    CandidateFileId = table.Column<string>(nullable: true),
+                    CandidateId = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     FileType = table.Column<string>(nullable: true),

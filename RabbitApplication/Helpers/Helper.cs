@@ -84,7 +84,7 @@ namespace RabbitApplication.Helpers
                 objCandidateFileModel.FilePath = candidateFile.FilePath;
                 objCandidateFileModel.Createddate = candidateFile.Createddate;
                 objCandidateFileModel.Id = candidateFile.Id;
-                objCandidateFileModel.CandiateFileId = candidateFile.CandiateFileId;
+                objCandidateFileModel.CandiateFileId = candidateFile.CandidateFileId;
             }
 
             return objCandidateFileModel;

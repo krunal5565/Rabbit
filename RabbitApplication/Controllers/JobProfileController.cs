@@ -85,6 +85,17 @@ namespace RabbitApplication.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Files()
+        {
+            string candidateId = _context.LoginDetails.Where(x => x.Username == User.Identity.Name).FirstOrDefault().CandidateId;
+
+            var candidateFile =  _context.CandidateFiles.Where(x=>x.CandidateId == candidateId);
+
+            return View(candidateFile);
+        }
+
+
         public async Task<IActionResult> FileUpload(List<IFormFile> files, string fileType)
         {
                 long size = files.Sum(f => f.Length);
@@ -106,7 +117,8 @@ namespace RabbitApplication.Controllers
 
                     CandidateFile objCandidateFile = new CandidateFile();
                     objCandidateFile.Name = formFile.FileName;
-                    objCandidateFile.CandiateFileId = Guid.NewGuid().ToString();
+                    objCandidateFile.CandidateFileId = Guid.NewGuid().ToString();
+                    objCandidateFile.CandidateId = _context.LoginDetails.Where(x => x.Username == User.Identity.Name).FirstOrDefault().CandidateId;
                     objCandidateFile.FileType = fileType;
                     objCandidateFile.FilePath = filePath;
                     objCandidateFile.IsActive = true;
@@ -117,10 +129,10 @@ namespace RabbitApplication.Controllers
 
                     }
                 }
-                // process uploaded files
-                // Don't rely on or trust the FileName property without validation.
+            // process uploaded files
+            // Don't rely on or trust the FileName property without validation.
 
-                return Ok(new { count = files.Count, size, filePaths });
+            return RedirectToAction(nameof(files));
         }
 
         [HttpPost]

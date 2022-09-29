@@ -129,6 +129,15 @@ namespace FundaClearApp.Controllers
             return View("Admin/index", objCandidateModelList);
         }
 
+
+        [HttpGet]
+        public IActionResult ViewFiles(string id)
+        {
+            var candidateFile = _context.CandidateFiles.Where(x=>x.CandidateId == id);
+
+            return View("Admin/Files", candidateFile);
+        }
+
         public IActionResult view(string id)
         {
             CandidateModel objCandidateModel = new CandidateModel();
@@ -167,7 +176,10 @@ namespace FundaClearApp.Controllers
 
                 if (dbLoginDetails != null)
                 {
-                    var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, model.Username), }, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var identity = new ClaimsIdentity(new[] { 
+                        new Claim(ClaimTypes.Name, model.Username)
+
+                    }, CookieAuthenticationDefaults.AuthenticationScheme);
 
                     var principal = new ClaimsPrincipal(identity);
 
@@ -192,7 +204,7 @@ namespace FundaClearApp.Controllers
 
         public IActionResult Files(string id)
         {
-            var candidateFile = _context.CandidateFiles.Where(x => x.CandiateFileId == id).FirstOrDefault();
+            var candidateFile = _context.CandidateFiles.Where(x => x.CandidateId == id).FirstOrDefault();
 
             CandidateFileModel objCandidateFileModel = ApplicationHelper.BindFileHelperData(candidateFile);
 

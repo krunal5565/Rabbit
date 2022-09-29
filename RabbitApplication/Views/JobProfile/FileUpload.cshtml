@@ -6,10 +6,18 @@
 
 <h1>Upload Files</h1>
 
+<hr/>
+
 <form method="post" enctype="multipart/form-data" asp-controller="JobProfile" asp-action="FileUpload">
      <div class="form-group">
         <div class="col-md-10">
-            <input type="text" name="fileType"  />
+            <select name="fileType" >
+                <option>Other</option>
+                <option>Adhar Card</option>
+                <option>Voting Card</option>
+                <option>Resume</option>
+            </select>
+         
         </div>
     </div>
     <div class="form-group">
@@ -19,7 +27,7 @@
     </div>
     <div class="form-group">
         <div class="col-md-10">
-            <input type="submit" value="Upload" />
+            <input type="submit" class="btn-primary" value="Upload" />
         </div>
     </div>
 </form>
