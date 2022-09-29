@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using RabbitApplication.Data;
 using RabbitApplication.Entity;
 using RabbitApplication.Helpers;
@@ -15,10 +18,12 @@ namespace RabbitApplication.Controllers
     public class JobProfileController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _config;
 
-        public JobProfileController(ApplicationDbContext context)
+        public JobProfileController(ApplicationDbContext context, IConfiguration config)
         {
             _context = context;
+            _config = config;
         }
 
         public async Task<IActionResult> Careers()
@@ -74,7 +79,50 @@ namespace RabbitApplication.Controllers
             return View();
         }
 
-       
+        [HttpGet]
+        public IActionResult FileUpload()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> FileUpload(List<IFormFile> files, string fileType)
+        {
+                long size = files.Sum(f => f.Length);
+
+                var filePaths = new List<string>();
+                foreach (var formFile in files)
+                {
+                    if (formFile.Length > 0)
+                    {
+                        
+                        var filePath = _config.GetSection("FilePath").Value + formFile.FileName; 
+
+                        filePaths.Add(filePath);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await formFile.CopyToAsync(stream);
+                        }
+
+                    CandidateFile objCandidateFile = new CandidateFile();
+                    objCandidateFile.Name = formFile.FileName;
+                    objCandidateFile.CandiateFileId = Guid.NewGuid().ToString();
+                    objCandidateFile.FileType = fileType;
+                    objCandidateFile.FilePath = filePath;
+                    objCandidateFile.IsActive = true;
+                    objCandidateFile.Createddate = DateTime.Now;
+
+                    _context.CandidateFiles.Add(objCandidateFile);
+                    _context.SaveChanges();
+
+                    }
+                }
+                // process uploaded files
+                // Don't rely on or trust the FileName property without validation.
+
+                return Ok(new { count = files.Count, size, filePaths });
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(JobProfileModel jobProfileModel)

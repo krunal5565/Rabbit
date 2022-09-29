@@ -419,14 +419,9 @@ D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Pages\Shared\
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Pages\Shared\_ValidationScriptsPartial.cshtml.g.cs
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Pages\_ViewImports.cshtml.g.cs
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Pages\_ViewStart.cshtml.g.cs
-D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\Candidates\Create.cshtml.g.cs
-D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\Candidates\Delete.cshtml.g.cs
-D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\Candidates\Edit.cshtml.g.cs
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\Candidate\Admin\Index.cshtml.g.cs
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\Candidate\Admin\view.cshtml.g.cs
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\Candidate\Details.cshtml.g.cs
-D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\Candidate\Files.cshtml.g.cs
-D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\Candidate\FileUpload.cshtml.g.cs
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\Candidate\Login.cshtml.g.cs
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\Candidate\Register.cshtml.g.cs
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\Home\index.cshtml.g.cs
@@ -440,7 +435,6 @@ D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\Shared\
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_GuestLayout.cshtml.g.cs
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_Layout.cshtml.g.cs
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
-D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\Supplier\index.cshtml.g.cs
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\User\index.cshtml.g.cs
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\_ViewImports.cshtml.g.cs
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\_ViewStart.cshtml.g.cs
@@ -451,7 +445,6 @@ D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\RabbitApplication.c
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\RabbitApplication.dll
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\RabbitApplication.pdb
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\RabbitApplication.genruntimeconfig.cache
-D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\RabbitApplication.csproj.AssemblyReference.cache
 D:\Alkermes\Rabbit\RabbitApplication\bin\Debug\netcoreapp3.1\System.Web.Mvc.dll
 D:\Alkermes\Rabbit\RabbitApplication\bin\Debug\netcoreapp3.1\System.Web.Razor.dll
 D:\Alkermes\Rabbit\RabbitApplication\bin\Debug\netcoreapp3.1\System.Web.Helpers.dll
@@ -462,3 +455,5 @@ D:\Alkermes\Rabbit\RabbitApplication\bin\Debug\netcoreapp3.1\Microsoft.Web.Infra
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\JobProfile\CareersJobProfileDetails.cshtml.g.cs
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\Account\Dashboard.cshtml.g.cs
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\Candidate\JobApplySuccess.cshtml.g.cs
+D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\JobProfile\Files.cshtml.g.cs
+D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\JobProfile\FileUpload.cshtml.g.cs
