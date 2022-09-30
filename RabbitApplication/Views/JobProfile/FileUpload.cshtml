@@ -4,11 +4,11 @@
     Layout = "~/Views/Shared/_GuestLayout.cshtml";
 }
 
-<h1>Upload Files</h1>
+
 
 <hr/>
-
-<form method="post" enctype="multipart/form-data" asp-controller="JobProfile" asp-action="FileUpload">
+<div style="margin:50px; padding:20px; border:1px solid #ddd">
+    <form method="post" enctype="multipart/form-data" asp-controller="JobProfile" asp-action="FileUpload">
      <div class="form-group">
         <div class="col-md-10">
             <select name="fileType" >
@@ -20,14 +20,17 @@
          
         </div>
     </div>
+    <br/>
     <div class="form-group">
         <div class="col-md-10">
             <input type="file" name="files"  />
         </div>
     </div>
+    <br/>  <br/>
     <div class="form-group">
         <div class="col-md-10">
             <input type="submit" class="btn-primary" value="Upload" />
         </div>
     </div>
 </form>
+</div>

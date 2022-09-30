@@ -38,33 +38,38 @@ namespace FundaClearApp.Controllers
         {
             string emailId = User.Identity.Name;
             Candidate objCandidate =  _context.Candidate.Where(x => x.Email == emailId).FirstOrDefault();
-            objCandidate.Fname = model.Fname;
-            objCandidate.CandidateId = model.CandidateId;
-            objCandidate.Lname = model.Lname;
-            objCandidate.Mname = model.Mname;
-            objCandidate.Title = model.Title;
-            objCandidate.PermanentAddress = model.PermanentAddress;
-            objCandidate.PresentAddress = model.PresentAddress;
-            objCandidate.Mobile = model.Mobile;
-            objCandidate.Email = model.Email;
-            objCandidate.AlternateMobile = model.AlternateMobile;
-            objCandidate.Gender = model.Gender;
-            objCandidate.DOB = model.DOB;
-            objCandidate.Caste = model.Caste;
-            objCandidate.City = model.City;
-            objCandidate.Pincode = model.Pincode;
-          
-            _context.Candidate.Update(objCandidate);
 
-            CandidateJobProfileMapping objCandidateJobProfileMapping = new CandidateJobProfileMapping();
-            objCandidateJobProfileMapping.CandidateJobProfileMappingId = Guid.NewGuid().ToString();
-            objCandidateJobProfileMapping.JobProfileId = model.JobProfileId;
-            objCandidateJobProfileMapping.Candidateid = model.CandidateId;
-            objCandidateJobProfileMapping.JobAppliedDate = DateTime.Now;
+            if(objCandidate != null)
+            {
+                objCandidate.Fname = model.Fname;
+                objCandidate.CandidateId = model.CandidateId;
+                objCandidate.Lname = model.Lname;
+                objCandidate.Mname = model.Mname;
+                objCandidate.Title = model.Title;
+                objCandidate.PermanentAddress = model.PermanentAddress;
+                objCandidate.PresentAddress = model.PresentAddress;
+                objCandidate.Mobile = model.Mobile;
+                objCandidate.Email = model.Email;
+                objCandidate.AlternateMobile = model.AlternateMobile;
+                objCandidate.Gender = model.Gender;
+                objCandidate.DOB = model.DOB;
+                objCandidate.Caste = model.Caste;
+                objCandidate.City = model.City;
+                objCandidate.Pincode = model.Pincode;
 
-            _context.CandidateJobProfileMapping.Add(objCandidateJobProfileMapping);
+                _context.Candidate.Update(objCandidate);
 
-            _context.SaveChanges();
+                CandidateJobProfileMapping objCandidateJobProfileMapping = new CandidateJobProfileMapping();
+                objCandidateJobProfileMapping.CandidateJobProfileMappingId = Guid.NewGuid().ToString();
+                objCandidateJobProfileMapping.JobProfileId = model.JobProfileId;
+                objCandidateJobProfileMapping.Candidateid = model.CandidateId;
+                objCandidateJobProfileMapping.JobAppliedDate = DateTime.Now;
+
+                _context.CandidateJobProfileMapping.Add(objCandidateJobProfileMapping);
+
+                _context.SaveChanges();
+
+            }
 
             return RedirectToAction("JobApplySuccess", "Candidate");
         }

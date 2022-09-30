@@ -458,10 +458,10 @@ D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\RabbitApplication.d
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\RabbitApplication.pdb
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\RabbitApplication.genruntimeconfig.cache
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\Candidate\Admin\Files.cshtml.g.cs
-D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\RabbitApplication.csproj.AssemblyReference.cache
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\Home\About.cshtml.g.cs
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\Home\Contact.cshtml.g.cs
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\Home\Portfolio.cshtml.g.cs
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\Home\Pricing.cshtml.g.cs
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\Home\Services.cshtml.g.cs
 D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\Razor\Views\Home\Team.cshtml.g.cs
+D:\Alkermes\Rabbit\RabbitApplication\obj\Debug\netcoreapp3.1\RabbitApplication.csproj.AssemblyReference.cache

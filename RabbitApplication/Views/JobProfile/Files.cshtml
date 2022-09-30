@@ -5,10 +5,12 @@
 	Layout = "~/Views/Shared/_GuestLayout.cshtml";
 }
 
-<h1>Files</h1>
+
 
 <br/><br/>
-<a class="btn btn-sm btn-primary" href="@Url.Action("FileUpload", "JobProfile")"> Click to Upload Files </a>
+<div style="margin:30px; border:1px solid #ddd;">
+	<br/><br/>
+<a class="btn btn-sm btn-primary" style="float:right" href="@Url.Action("FileUpload", "JobProfile")"> Click to Upload Files </a>
 <br/><br/>
 <table class="table">
 	<thead>
@@ -50,4 +52,7 @@
 			</tr>
 		}
 	</tbody>
-</table>
+	</table>
+</div>
+
+
