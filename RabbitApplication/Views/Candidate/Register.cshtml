@@ -1,15 +1,15 @@
 ﻿@model RabbitApplication.Models.RegistrationModel
 @{
 	ViewData["Title"] = "Register";
-	Layout = "~/Views/Shared/_CandidateLayout.cshtml";
+	Layout = "~/Views/Shared/_GuestLayout.cshtml";
 }
 
 <div class="container">
 	<main role="main" class="pb-3">
-
-		<h1>Register</h1>
-
+<br/><br/><br/><br/>
+<div class="col-sm-12 shadow-lg p-5 bg-light">
 		<div class="row">
+
 			<div class="col-md-4">
 				<form id="registerForm" method="post" action="@Url.Action("Register", "Candidate")" novalidate="novalidate">
 					<h4>Create a new account.</h4>
@@ -30,11 +30,13 @@
 						@Html.PasswordFor(m=>m.ConfirmPassword, new { @class = "form-control"})
 
 					</div>
+					<br/>
 					<button id="registerSubmit" type="submit" class="btn btn-primary">Register</button>
 
 
 				</form>
 			</div>
+		</div>
 		</div>
 	</main>
 </div>
