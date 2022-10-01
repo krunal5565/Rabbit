@@ -10,20 +10,28 @@
 		<header class="section-header">
 			<h2>Job Profile Details</h2>
 			<p>@Html.DisplayFor(model => model.Name) </p>
-		Number of Positions :	@Html.DisplayFor(model => model.NumberOfPositions)
-		<div>
-				<a href="@Url.Action("details", "Candidate", new {id = Model.JobProfileId})" class="btn btn-primary"><span>Apply</span> <i class="bi bi-arrow-right"></i></a>
-		</div>
-	
+			Number of Positions :	@Html.DisplayFor(model => model.NumberOfPositions)
+			<div>
+				@if (User.Identity.IsAuthenticated)
+				{
+					<a href="@Url.Action("details", "Candidate", new {id = Model.JobProfileId})" class="btn btn-primary"><span>Apply</span> <i class="bi bi-arrow-right"></i></a>
+				}
+				else
+				{
+					<a href="@Url.Action("Login", "Candidate", new {id = Model.JobProfileId})" class="btn btn-primary"><span>Apply</span> <i class="bi bi-arrow-right"></i></a>
+				}
+
+			</div>
+
 		</header>
 		<div class="row gy-4">
 			<div class="col-lg-12 col-md-12" data-aos="fade-up" data-aos-delay="200">
-				<div class="" style="border:1px solid #ddd; padding: 20px ; border-radius : 4px;">			
-						<a href="@Url.Action("index", "home")" style="float:right" class=""><span>Back To List</span></a>
-			
+				<div class="" style="border:1px solid #ddd; padding: 20px ; border-radius : 4px;">
+					<a href="@Url.Action("index", "home")" style="float:right" class=""><span>Back To List</span></a>
+
 					<h3>Job Description</h3>
-					<p>@Html.Raw(Model.Description)</p>		
-					
+					<p>@Html.Raw(Model.Description)</p>
+
 				</div>
 			</div>
 		</div>
