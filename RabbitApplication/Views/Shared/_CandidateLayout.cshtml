@@ -25,14 +25,6 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" href="@Url.Action("Careers", "JobProfile")">Careers</a>
                         </li>
-
-                      @if(User.Identity.IsAuthenticated)
-                      {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="@Url.Action("Files", "JobProfile")">My Files</a>
-                        </li>
-                      }
-                      
                     </ul>
                 </div>
             </div>

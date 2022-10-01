@@ -26,19 +26,7 @@ namespace RabbitApplication.Controllers
             _config = config;
         }
 
-        public async Task<IActionResult> Careers()
-        {
-            var jobProfile = await _context.JobProfile.ToListAsync();
-
-            List<JobProfileModel> lstJobProfileModel = new List<JobProfileModel>();
-
-            foreach (JobProfile objJobProfile in jobProfile)
-            {
-                lstJobProfileModel.Add(ApplicationHelper.BindJobProfileEntityToModel(objJobProfile));
-            }
-
-            return View(lstJobProfileModel);
-        }
+      
 
         public async Task<IActionResult> Index()
         {

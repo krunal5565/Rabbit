@@ -1,14 +1,45 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RabbitApplication.Data;
+using RabbitApplication.Models;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Linq;
+using System.Security.Claims;
+using RabbitApplication.Helpers;
+using RabbitApplication.Entity;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace RabbitApplication.Controllers
 {
     public class HomeController : Controller
     {
-        // GET: HomeController
-        public ActionResult Index()
+
+        private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _config;
+
+        public HomeController(ApplicationDbContext context, IConfiguration config)
         {
-            return View();
+            _context = context;
+            _config = config;
+        }
+
+        public   IActionResult Index()
+        {
+            var jobProfile =  _context.JobProfile.ToList();
+
+            List<JobProfileModel> lstJobProfileModel = new List<JobProfileModel>();
+
+            foreach (JobProfile objJobProfile in jobProfile)
+            {
+                lstJobProfileModel.Add(ApplicationHelper.BindJobProfileEntityToModel(objJobProfile));
+            }
+
+            return View(lstJobProfileModel);
         }
 
         // GET: HomeController/Details/5

@@ -6,49 +6,45 @@
 }
 
 
-<br />
-<br />
+<main id="main">
+	<br /><br />
+	<section id="values" class="values">
+		<div class="container" data-aos="fade-up">
+			<header class="section-header">
+				<h2>Open Positions</h2>
+				<p>We are always looking for creative, talented and passionate people.</p>
+			</header>
 
-<h2>Careers</h2>
+			<div class="row">
+				@foreach (var item in Model)
+				{
+					<div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+						<div class="box">
+							<img src="~/Website/assets/img/values-1.png" class="img-fluid" alt="">
+							<h3>@Html.DisplayFor(modelItem => item.Name)</h3>
+							@*<p>	@Html.Raw(item.Description)</p>*@
+							<span style="">
+								<a href="@Url.Action("CareersDetails","JobProfile", new {id = item.JobProfileId})" class="btn-sm btn-primary pull-right"> View Details </a>
+								&nbsp
 
+							@*	@if (User.Identity.IsAuthenticated)
+								{
+									<a href="@Url.Action("Details", "Candidate", new {@id = item.JobProfileId})" class="btn-sm btn-primary pull-right"> Apply </a>
+								}
+								else
+								{
+									<a href="@Url.Action("Login", "Candidate")" class="btn-sm btn-primary pull-right"> Apply </a>
+								}*@
+							</span>
+						</div>
+					</div>
 
-@foreach (var item in Model)
-{
-	<table style="width:100%">
-		<tr>
-			<td>
-				<div style="border:1px solid #ebf0f6;background-color: #ebf0f6; border-radius:4px; padding:15px;margin:10px;">
-					<table style="width:100%;">
-						<tr>
-							<td>
-								<b>@Html.DisplayFor(modelItem => item.Name)</b>
-								<br />
-								@Html.Raw(item.ShortDescription)
-								<br />
-								<br />
-							</td>
-							<td>
-								<span style="float:right">
-									<a href="@Url.Action("CareersDetails","JobProfile", new {id = item.JobProfileId})" class="btn-sm btn-primary pull-right"> View Details </a>
-									&nbsp
+				}
 
-									@if(User.Identity.IsAuthenticated)
-									{
-											<a href="@Url.Action("Details", "Candidate", new {@id = item.JobProfileId})" class="btn-sm btn-primary pull-right"> Apply </a>
-									}
-									else
-									{
-										<a href="@Url.Action("Login", "Candidate")" class="btn-sm btn-primary pull-right"> Apply </a>
-									}
-								</span>
-							</td>
-						</tr>
-					</table>
-				</div>
-			</td>
+			</div>
+		</div>
+	</section>
+</main>
 
-		</tr>
-	</table>
-}
 
 
