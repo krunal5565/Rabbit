@@ -26,7 +26,18 @@
 	<link href="~/Website/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
 	<link href="~/Website/assets/css/style.css" rel="stylesheet">
+	<style>
 
+		.error {
+            color: red;
+        }
+
+
+		.field-validation-error error
+		{
+			color:red;
+		}
+	</style>
 
 </head>
 
@@ -43,9 +54,9 @@
 			<nav id="navbar" class="navbar">
 				<ul>
 					<li><a class="nav-link scrollto active" href="@Url.Action("index","Home")">Home</a></li>
-@*
-					<li><a class="nav-link scrollto" href="@Url.Action("Careers", "JobProfile")">Careers</a></li>
-*@
+					@*
+						<li><a class="nav-link scrollto" href="@Url.Action("Careers", "JobProfile")">Careers</a></li>
+					*@
 					@if (User.Identity.IsAuthenticated)
 					{
 						<li class="nav-item">
@@ -78,7 +89,7 @@
 			<div class="copyright">
 				&copy; Copyright <strong><span>FundaClear</span></strong>. All Rights Reserved
 			</div>
-			
+
 		</div>
 	</footer><!-- End Footer -->
 
