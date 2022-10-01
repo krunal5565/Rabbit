@@ -37,7 +37,7 @@ namespace RabbitApplication.Models
         public string Fname { get; set; }
         public string Mname { get; set; }
         public string Lname { get; set; }
-        public IEnumerable<Dropdown> Gender { get; set; }
+        public string Gender { get; set; }
         public string Caste { get; set; }
         public DateTime? DOB { get; set; }
         public string PresentAddress { get; set; }

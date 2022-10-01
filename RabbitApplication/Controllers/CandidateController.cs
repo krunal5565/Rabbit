@@ -122,7 +122,7 @@ namespace FundaClearApp.Controllers
                     entityCandidate.Mobile = model.Mobile;
                     entityCandidate.Email = entityCandidate.Email;
                     entityCandidate.AlternateMobile = model.AlternateMobile;
-                    //entityCandidate.Gender = model.Gender;
+                    entityCandidate.Gender = model.Gender;
                     entityCandidate.DOB = model.DOB;
                     entityCandidate.Caste = model.Caste;
                     entityCandidate.City = model.City;
@@ -172,7 +172,7 @@ namespace FundaClearApp.Controllers
             return View("Details", GetCandidateDetails(model.JobProfileId));
         }
 
-        public async Task<IActionResult> FileUpload(List<IFormFile> files, string fileType, string CandidateJobProfileMappingId)
+        public async Task<IActionResult> FileUpload(List<IFormFile> files, string fileName, string fileType, string CandidateJobProfileMappingId)
         {
 
             if (String.IsNullOrEmpty(fileType))
@@ -202,7 +202,7 @@ namespace FundaClearApp.Controllers
                     }
 
                     CandidateFile objCandidateFile = new CandidateFile();
-                    objCandidateFile.Name = formFile.FileName;
+                    objCandidateFile.Name = fileName;
                     objCandidateFile.CandidateFileId = Guid.NewGuid().ToString();
                     objCandidateFile.CandidateId = _context.LoginDetails.Where(x => x.Username == User.Identity.Name).FirstOrDefault().CandidateId;
                     objCandidateFile.FileType = fileType;

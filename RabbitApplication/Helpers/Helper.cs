@@ -71,7 +71,7 @@ namespace RabbitApplication.Helpers
                 objCandidateModel.Mobile = candidate.Mobile;
                 objCandidateModel.IsActive = candidate.IsActive;
                 objCandidateModel.Id = candidate.Id;
-               // objCandidateModel.Gender = candidate.Gender;
+                objCandidateModel.Gender = candidate.Gender;
                 objCandidateModel.Email = candidate.Email;
                 objCandidateModel.City = candidate.City;
                 objCandidateModel.Caste = candidate.Caste;

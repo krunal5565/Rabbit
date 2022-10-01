@@ -1,4 +1,5 @@
-﻿@model RabbitApplication.Models.CandidateModel
+﻿@using RabbitApplication.Models
+@model RabbitApplication.Models.CandidateModel
 @{
 	ViewData["Title"] = "Register";
 	Layout = "~/Views/Shared/_GuestLayout.cshtml";
@@ -38,7 +39,9 @@
 											<div class="row">
 												<div class="col-md-4">
 													<label for="inputEmail4">Title</label>
-													@Html.TextBoxFor(m=>m.Title, new { @class = "form-control"})
+													@Html.DropDownListFor(m=>m.Title, new SelectList(Enum.GetValues(typeof(Title))),
+													"Select Title",
+													new { @class = "form-control" })
 												</div>
 												<div class="col-md-4">
 													<label for="inputPassword4">First Name</label>
@@ -55,10 +58,11 @@
 											</div>
 
 											<div class="row">
-												@*<div class="col-md-4">
-													<label for="inputPassword4">Gender</label>
-													@Html.DropDownListFor(model => model.Gender, new SelectList(Model.Gender, "Id", "Text"), "Choose... ")
-												</div>*@
+												<div class="col-md-4">
+													<label for="inputPassword4">Gender</label>@Html.DropDownListFor(m=>m.Gender, new SelectList(Enum.GetValues(typeof(Gender))),
+													"Select Gender",
+													new { @class = "form-control" })
+												</div>
 												<div class="col-md-4">
 													<label for="inputPassword4">Date of Birth</label>
 													@Html.TextBoxFor(m=>m.DOB, new { @class = "form-control"})
@@ -75,7 +79,9 @@
 												</div>
 												<div class="col-md-4">
 													<label for="inputPassword4">Caste</label>
-													@Html.TextBoxFor(m=>m.Caste, new { @class = "form-control"})
+													@Html.DropDownListFor(m=>m.Caste, new SelectList(Enum.GetValues(typeof(Caste))),
+													"Select Caste",
+													new { @class = "form-control" })
 												</div>
 											</div>
 											<div class="row">
@@ -227,11 +233,17 @@
 								<div class="accordion-body">
 									<form method="post" enctype="multipart/form-data" asp-controller="Candidate" asp-action="FileUpload">
 										<div class="row">
-											<div class="col-md-6">
-												<label for="inputEmail4">File Type</label>
-												<input name="fileType" class="form-control" type="text" />
+												<div class="col-md-4">
+												<label for="inputEmail4">File Name</label>
+												<input type="text" name="fileName" class="form-control" />
 											</div>
-											<div class="col-md-6">
+											<div class="col-md-4">
+												<label for="inputEmail4">File Type</label>
+												@Html.DropDownList("FileType", new SelectList(Enum.GetValues(typeof(DocumentType))),
+													"Select Document Type",
+													new { @class = "form-control" })
+											</div>
+											<div class="col-md-4">
 												<label for="inputPassword4">Upload File</label>
 												<input type="file" name="files" class="form-control" />
 											</div>
@@ -246,7 +258,7 @@
 											<div class="col-md-2">
 												<button type="submit" class="btn btn-primary pull-right col-md-12">Save</button>
 											</div>
-											<br/>
+											<br />
 										</div>
 									</form>
 									<div>
