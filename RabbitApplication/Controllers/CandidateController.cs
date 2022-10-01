@@ -252,6 +252,7 @@ namespace FundaClearApp.Controllers
 
                 objCandidateModel.EducationalDetails = new List<EducationalDetailsModel>();
                 objCandidateModel.EducationalDetails.AddRange(GetEducationalDetails(entityCandidate.CandidateId));
+                objCandidateModel.EducationalDetails.Add(new EducationalDetailsModel()); ;
 
                 objCandidateModel.Files = new List<CandidateFileModel>();
                 objCandidateModel.Files.AddRange(GetFileDetails(entityCandidate.CandidateId));
