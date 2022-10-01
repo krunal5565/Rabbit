@@ -4,16 +4,15 @@
 	Layout = "~/Views/Shared/_GuestLayout.cshtml";
 }
 
-<div class="container">
-	<main role="main" class="pb-3">
-<br/><br/><br/><br/>
-<div class="col-sm-12 shadow-lg p-5 bg-light">
-		<div class="row">
-
-			<div class="col-md-4">
+<section id="services" class="services">
+	<div class="container" data-aos="fade-up">
+		<header class="section-header">
+			<h2>Create a new account.</h2>
+			<p>On registering, you can apply for a job</p>
+		</header>
+		<div class="row gy-4 shadow-lg p-5 bg-light">
+			<div class="col-lg-4 col-md-4 col-lg-offset-2" data-aos="fade-up" data-aos-delay="200">
 				<form id="registerForm" method="post" action="@Url.Action("Register", "Candidate")" novalidate="novalidate">
-					<h4>Create a new account.</h4>
-					<hr>
 
 					<div class="form-group">
 						<label for="Input_Email">Email</label>
@@ -30,16 +29,14 @@
 						@Html.PasswordFor(m=>m.ConfirmPassword, new { @class = "form-control"})
 
 					</div>
-					<br/>
-					<button id="registerSubmit" type="submit" class="btn btn-primary">Register</button>
-
-
+					<br />
+					<button id="registerSubmit" type="submit" class="btn btn-primary pull-right">Register</button>
 				</form>
 			</div>
 		</div>
-		</div>
-	</main>
-</div>
+	</div>
+</section>
+
 
 
 
