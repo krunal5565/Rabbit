@@ -470,7 +470,7 @@ namespace FundaClearApp.Controllers
 
                 await _context.SaveChangesAsync();
 
-                ViewBag.UserAdded = "Account created successfully. You can login using your account.";
+                TempData["RegisterSuccess"] = "Account created successfully. You can login using your account.";
                 return RedirectToAction(nameof(Login));
             }
 

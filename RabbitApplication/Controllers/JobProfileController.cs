@@ -168,7 +168,13 @@ namespace RabbitApplication.Controllers
             {
                 try
                 {
-                    JobProfile jobProfile = ApplicationHelper.BindJobProfileModelToEntity(jobProfileModel);
+                    var jobProfile = _context.JobProfile.Where(x => x.JobProfileId == jobProfileModel.JobProfileId).FirstOrDefault();
+
+                    jobProfile.NumberOfPositions = jobProfileModel.NumberOfPositions;
+                    jobProfile.EndDate = jobProfileModel.EndDate;
+                    jobProfile.Description = jobProfileModel.Description;
+                    jobProfile.StartDate = jobProfileModel.StartDate;
+                    jobProfile.Name = jobProfileModel.Name;
 
                     _context.Update(jobProfile);
                     await _context.SaveChangesAsync();

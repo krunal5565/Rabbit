@@ -51,6 +51,7 @@ namespace RabbitApplication.Helpers
                 objJobProfileData.ShortDescription = jobProfile.Description != null && jobProfile.Description.Length> 20 ? jobProfile.Description.Substring(0,20): jobProfile.Description;
                 objJobProfileData.StartDate = jobProfile.StartDate;
                 objJobProfileData.Name = jobProfile.Name;
+                objJobProfileData.Id = jobProfile.Id;
             }
 
             return objJobProfileData;
