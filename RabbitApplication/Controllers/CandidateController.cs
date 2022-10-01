@@ -157,7 +157,7 @@ namespace FundaClearApp.Controllers
 
                     objCandidateJobProfileMapping.JobAppliedDate = DateTime.Now;
                     objCandidateJobProfileMapping.Status = "Submitted";
-                    objCandidateJobProfileMapping.AknoNumber = ackNo; 
+                    objCandidateJobProfileMapping.AknoNumber = ackNo;
                     _context.CandidateJobProfileMapping.Update(objCandidateJobProfileMapping);
 
                     _context.SaveChanges();
@@ -263,7 +263,7 @@ namespace FundaClearApp.Controllers
         private CandidateModel GetCandidateDetails(string candidateJobProfileMappingId)
         {
             CandidateModel objCandidateModel = new CandidateModel();
-  
+
             CandidateJobProfileMapping entityCandidateJobProfileMapping = _context.CandidateJobProfileMapping.
                                                 Where(x => x.CandidateJobProfileMappingId == candidateJobProfileMappingId).FirstOrDefault();
 
@@ -273,7 +273,7 @@ namespace FundaClearApp.Controllers
                 objCandidateModel = ApplicationHelper.BindCandidateHelperData(entityCandidate);
                 objCandidateModel.JobProfileId = entityCandidateJobProfileMapping.JobProfileId;
                 objCandidateModel.CandidateJobProfileMappingId = candidateJobProfileMappingId;
-
+                objCandidateModel.JobProfileStatus = entityCandidateJobProfileMapping.Status; 
                 objCandidateModel.EducationalDetails = new List<EducationalDetailsModel>();
                 objCandidateModel.EducationalDetails.AddRange(GetEducationalDetails(entityCandidate.CandidateId));
                 objCandidateModel.EducationalDetails.Add(new EducationalDetailsModel()); ;
@@ -285,24 +285,56 @@ namespace FundaClearApp.Controllers
             return objCandidateModel;
         }
 
+        public IActionResult JobApplications()
+        {
+            List<MyJobApplicationsModel> lstCandidateMapping = new List<MyJobApplicationsModel>();
+
+            try
+            {
+                List<CandidateJobProfileMapping> entityCandidateJobMapping = _context.CandidateJobProfileMapping.Where(x => x.Status == ApplicationHelper.JobProfileStatusSubmitted).ToList();
+
+                if (entityCandidateJobMapping != null)
+                {
+                    foreach (var entity in entityCandidateJobMapping)
+                    {
+                        var candidate = _context.Candidate.Where(x => x.CandidateId == entity.Candidateid).FirstOrDefault();
+
+                        string strCandidate = candidate.Fname + " " + candidate.Lname;
+                        var jobProfile = _context.JobProfile.Where(x => x.JobProfileId == entity.JobProfileId).FirstOrDefault().Name;
+                        lstCandidateMapping.Add(ApplicationHelper.MapJobApplicationsEntityToModel(entity, jobProfile, strCandidate));
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return View("Admin/Applications", lstCandidateMapping);
+        }
+
         public IActionResult MyApplications()
         {
-            List<MyJobApplications> lstCandidateMapping = new List<MyJobApplications>();
+            List<MyJobApplicationsModel> lstCandidateMapping = new List<MyJobApplicationsModel>();
 
             try
             {
                 string candidateId = GetCandidateId();
                 List<CandidateJobProfileMapping> entityCandidateJobMapping = _context.CandidateJobProfileMapping.Where(x => x.Candidateid == candidateId).ToList();
 
+                var candidate = _context.Candidate.Where(x => x.CandidateId == candidateId).FirstOrDefault();
+
                 if (entityCandidateJobMapping != null)
                 {
                     foreach (var entity in entityCandidateJobMapping)
                     {
-                        MyJobApplications objMyJobApplications = new MyJobApplications();
+                        MyJobApplicationsModel objMyJobApplications = new MyJobApplicationsModel();
                         objMyJobApplications.CandidateId = entity.Candidateid;
                         objMyJobApplications.JobApplicationDate = entity.Createddate.ToLongDateString();
                         objMyJobApplications.Status = entity.Status;
                         objMyJobApplications.AkNo = entity.AknoNumber;
+                        objMyJobApplications.CandidateName = candidate.Fname + " " + candidate.Lname;
                         objMyJobApplications.CandidateJobProfileMappingId = entity.CandidateJobProfileMappingId;
                         objMyJobApplications.JobProfileName = _context.JobProfile.Where(x => x.JobProfileId == entity.JobProfileId).FirstOrDefault().Name;
                         lstCandidateMapping.Add(objMyJobApplications);
@@ -319,11 +351,11 @@ namespace FundaClearApp.Controllers
         }
 
         public IActionResult JobApply(string id)
-		{
-            string candidateJobProfileId = Guid.NewGuid().ToString(); 
+        {
+            string candidateJobProfileId = Guid.NewGuid().ToString();
 
             try
-			{
+            {
                 string candidateId = GetCandidateId();
                 CandidateJobProfileMapping objCandidateJobProfileMapping = new CandidateJobProfileMapping();
                 objCandidateJobProfileMapping.CandidateJobProfileMappingId = candidateJobProfileId;
@@ -334,10 +366,10 @@ namespace FundaClearApp.Controllers
                 _context.CandidateJobProfileMapping.Add(objCandidateJobProfileMapping);
                 _context.SaveChanges();
             }
-            catch(Exception ex)
-			{
+            catch (Exception ex)
+            {
 
-			}
+            }
             return RedirectToAction("Details", new { @id = candidateJobProfileId });
         }
 
@@ -417,9 +449,12 @@ namespace FundaClearApp.Controllers
 
                     CandidateJobProfileMapping objCandidateJobProfileMapping = _context.CandidateJobProfileMapping.Where(x => x.Candidateid == objCandidate.CandidateId).FirstOrDefault();
 
-                    objCandidateModel.JobProfileName = _context.JobProfile.Where(x => x.JobProfileId == objCandidateJobProfileMapping.JobProfileId).FirstOrDefault().Name;
+                    if(objCandidateJobProfileMapping != null)
+                    {
+                        objCandidateModel.JobProfileName = _context.JobProfile.Where(x => x.JobProfileId == objCandidateJobProfileMapping.JobProfileId).FirstOrDefault().Name;
 
-                    objCandidateModelList.Add(objCandidateModel);
+                        objCandidateModelList.Add(objCandidateModel);
+                    }
                 }
             }
             catch (Exception ex)

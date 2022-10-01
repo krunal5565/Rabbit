@@ -5,6 +5,8 @@ namespace RabbitApplication.Helpers
 {
     public class ApplicationHelper
     {
+        public static string JobProfileStatusSubmitted = "Submitted";
+
         public static EducationalDetails BindEducationDetailsModelToEntity(EducationalDetailsModel model)
         {
             EducationalDetails educationalDetails = new EducationalDetails();
@@ -55,6 +57,19 @@ namespace RabbitApplication.Helpers
             }
 
             return objJobProfileData;
+        }
+
+        public static MyJobApplicationsModel MapJobApplicationsEntityToModel(CandidateJobProfileMapping entity, string jobProfileName, string candidateName)
+        {
+            MyJobApplicationsModel objMyJobApplications = new MyJobApplicationsModel();
+            objMyJobApplications.CandidateId = entity.Candidateid;
+            objMyJobApplications.JobApplicationDate = entity.Createddate.ToLongDateString();
+            objMyJobApplications.Status = entity.Status;
+            objMyJobApplications.AkNo = entity.AknoNumber;
+            objMyJobApplications.CandidateName = candidateName;
+            objMyJobApplications.CandidateJobProfileMappingId = entity.CandidateJobProfileMappingId;
+            objMyJobApplications.JobProfileName = jobProfileName;
+            return objMyJobApplications;
         }
 
         public static CandidateModel BindCandidateHelperData(Candidate candidate)

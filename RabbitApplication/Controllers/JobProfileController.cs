@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using RabbitApplication.Data;
@@ -26,15 +23,13 @@ namespace RabbitApplication.Controllers
             _config = config;
         }
 
-      
-
         public async Task<IActionResult> Index()
         {
             var jobProfile = await _context.JobProfile.ToListAsync();
 
             List<JobProfileModel> lstJobProfileModel = new List<JobProfileModel>();
 
-            foreach(JobProfile objJobProfile in jobProfile)
+            foreach (JobProfile objJobProfile in jobProfile)
             {
                 lstJobProfileModel.Add(ApplicationHelper.BindJobProfileEntityToModel(objJobProfile));
             }
@@ -54,7 +49,6 @@ namespace RabbitApplication.Controllers
 
             JobProfileModel objJobProfileModel = ApplicationHelper.BindJobProfileEntityToModel(jobProfile);
 
-         
             if (jobProfile == null)
             {
                 return NotFound();
@@ -79,29 +73,26 @@ namespace RabbitApplication.Controllers
         {
             string candidateId = _context.LoginDetails.Where(x => x.Username == User.Identity.Name).FirstOrDefault().CandidateId;
 
-            var candidateFile =  _context.CandidateFiles.Where(x=>x.CandidateId == candidateId);
+            var candidateFile = _context.CandidateFiles.Where(x => x.CandidateId == candidateId);
 
             return View(candidateFile);
         }
 
-
-        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(JobProfileModel jobProfileModel)
         {
             if (ModelState.IsValid)
             {
-                if(jobProfileModel != null)
+                if (jobProfileModel != null)
                 {
                     jobProfileModel.JobProfileId = Guid.NewGuid().ToString();
                     JobProfile jobProfile = ApplicationHelper.BindJobProfileModelToEntity(jobProfileModel);
 
                     _context.Add(jobProfile);
                     await _context.SaveChangesAsync();
-
                 }
-              
+
                 return RedirectToAction(nameof(Index));
             }
             return View(jobProfileModel);
@@ -122,7 +113,7 @@ namespace RabbitApplication.Controllers
                 return NotFound();
             }
 
-            var jobProfile =  _context.JobProfile
+            var jobProfile = _context.JobProfile
                 .FirstOrDefault(m => m.JobProfileId == id);
 
             JobProfileModel objJobProfileModel = ApplicationHelper.BindJobProfileEntityToModel(jobProfile);
@@ -136,14 +127,14 @@ namespace RabbitApplication.Controllers
         }
 
         // GET: JobProfile/Edit/5
-        public  IActionResult Edit(string id)
+        public IActionResult Edit(string id)
         {
             if (string.IsNullOrEmpty(id))
             {
                 return NotFound();
             }
 
-            var jobProfile =  _context.JobProfile.Where(x=>x.JobProfileId == id).FirstOrDefault();
+            var jobProfile = _context.JobProfile.Where(x => x.JobProfileId == id).FirstOrDefault();
 
             JobProfileModel objJobProfileModel = ApplicationHelper.BindJobProfileEntityToModel(jobProfile);
 
@@ -154,7 +145,7 @@ namespace RabbitApplication.Controllers
             return View(objJobProfileModel);
         }
 
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(JobProfileModel jobProfileModel)
@@ -164,7 +155,7 @@ namespace RabbitApplication.Controllers
                 return NotFound();
             }
 
-          //  if (ModelState.IsValid)
+            //  if (ModelState.IsValid)
             {
                 try
                 {

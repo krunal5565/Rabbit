@@ -1,4 +1,5 @@
-﻿@using RabbitApplication.Models
+﻿@using RabbitApplication.Helpers
+@using RabbitApplication.Models
 @model RabbitApplication.Models.CandidateModel
 @{
 	ViewData["Title"] = "Register";
@@ -91,14 +92,13 @@
 											<div class="row">
 												<div class="col-md-6">
 													<label for="inputAddress">Present Address</label>
-													@Html.TextBoxFor(m=>m.PresentAddress, new { @class = "form-control"})
+													@Html.TextAreaFor(m=>m.PresentAddress, new { @class = "form-control"})
 												</div>
 												<div class="col-md-6">
 													<label for="inputAddress">Permanent Address</label>
-													@Html.TextBoxFor(m=>m.PermanentAddress, new { @class = "form-control"})
+													@Html.TextAreaFor(m=>m.PermanentAddress, new { @class = "form-control"})
 												</div>
 											</div>
-
 											<div class="row">
 												<div class="col-md-6">
 													<label for="inputAddress">City</label>
@@ -109,7 +109,6 @@
 													@Html.TextBoxFor(m=>m.Pincode, new { @class = "form-control"})
 												</div>
 											</div>
-
 											<div class="form-row">
 												@Html.HiddenFor(m=>m.CandidateId)
 												@Html.HiddenFor(m=>m.JobProfileId)
@@ -149,7 +148,11 @@
 											<div class="col-md-10">
 											</div>
 											<div class="col-md-2">
-												<button type="submit" class="btn btn-primary pull-right col-md-12">Save</button>
+												@if (Model.JobProfileStatus != ApplicationHelper.JobProfileStatusSubmitted)
+												{
+													<button type="submit" class="btn btn-primary pull-right col-md-12">Save</button>
+												}
+
 											</div>
 										</div>
 									</form>
@@ -210,8 +213,12 @@
 											<div class="col-md-10">
 											</div>
 											<div class="col-md-2">
-												<button type="submit" class="btn btn-primary pull-right col-md-12">Save</button>
+												@if (Model.JobProfileStatus != ApplicationHelper.JobProfileStatusSubmitted)
+												{
+													<button type="submit" class="btn btn-primary pull-right col-md-12">Save</button>
+												}
 											</div>
+											
 										</div>
 									</form>
 								</div>
@@ -237,15 +244,15 @@
 								<div class="accordion-body">
 									<form method="post" enctype="multipart/form-data" asp-controller="Candidate" asp-action="FileUpload">
 										<div class="row">
-												<div class="col-md-4">
+											<div class="col-md-4">
 												<label for="inputEmail4">File Name</label>
 												<input type="text" name="fileName" class="form-control" />
 											</div>
 											<div class="col-md-4">
 												<label for="inputEmail4">File Type</label>
 												@Html.DropDownList("FileType", new SelectList(Enum.GetValues(typeof(DocumentType))),
-													"Select Document Type",
-													new { @class = "form-control" })
+												"Select Document Type",
+												new { @class = "form-control" })
 											</div>
 											<div class="col-md-4">
 												<label for="inputPassword4">Upload File</label>
@@ -260,9 +267,13 @@
 											<div class="col-md-10">
 											</div>
 											<div class="col-md-2">
-												<button type="submit" class="btn btn-primary pull-right col-md-12">Save</button>
+												@if (Model.JobProfileStatus != ApplicationHelper.JobProfileStatusSubmitted)
+												{
+													<button type="submit" class="btn btn-primary pull-right col-md-12">Save</button>
+												}
+												<br/> <br />
 											</div>
-											<br />
+											
 										</div>
 									</form>
 									<div>
@@ -319,7 +330,10 @@
 						@Html.HiddenFor(m=>m.CandidateId)
 						@Html.HiddenFor(m=>m.JobProfileId)
 						@Html.HiddenFor(m=>m.CandidateJobProfileMappingId)
-						<input type="submit" class="btn btn-warning col-lg-12" value="Apply for Job" />
+						@if (Model.JobProfileStatus != ApplicationHelper.JobProfileStatusSubmitted)
+						{
+							<input type="submit" class="btn btn-warning col-lg-12" value="Apply for Job" />
+						}
 					</form>
 				</div>
 			</div>
