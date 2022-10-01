@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace RabbitApplication.Models
 {
@@ -25,5 +26,22 @@ namespace RabbitApplication.Models
         public DateTime Createddate { get; set; }
         public DateTime Updateddate { get; set; }
         public bool IsActive { get; set; }
+
+        public List<CandidateFileModel> Files { get; set; }
+        public List<EducationalDetailsModel> EducationalDetails { get; set; }
+    }
+
+    public class EducationalDetailsModel
+    {
+        public long id { get; set; }
+        public string CandidateId { get; set; }
+        public string Qualification { get; set; }
+        public string YearOfPassing { get; set; }
+        public string Percentage { get; set; }
+        public string Board { get; set; }
+        public string description { get; set; }
+        public DateTime createddate { get; set; }
+        public DateTime updateddate { get; set; }
+        public bool isactive { get; set; }
     }
 }

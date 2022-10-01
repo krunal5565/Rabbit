@@ -10,7 +10,7 @@ using RabbitApplication.Data;
 namespace RabbitApplication.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220929143956_Rabbit")]
+    [Migration("20220930165639_Rabbit")]
     partial class Rabbit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

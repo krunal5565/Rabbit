@@ -4,126 +4,299 @@
 	Layout = "~/Views/Shared/_GuestLayout.cshtml";
 }
 
+<style>
+	.accordion-body {
+		border: 1px solid blue;
+		padding: 20px;
+	}
+
+	.row {
+		margin-top: 10px !important;
+	}
+</style>
 <div class="container">
 	<main role="main" class="pb-3">
 		<div>
-			
-			<div>
-				<form method="post" action="@Url.Action("JobApply","Candidate")">
+
 			<br /><br /><br /><br />
-			<div style="background-color:#ddd; padding:10px">
-				Personal Details
-			</div>
-			<div style="border:1px solid #ddd; padding:10px;">
-					<div class="row">
-				<div class="col-md-4">
-					<label for="inputEmail4">Title</label>
-					@Html.TextBoxFor(m=>m.Title, new { @class = "form-control"})
-				</div>
-				<div class="col-md-4">
-					<label for="inputPassword4">First Name</label>
-					@Html.TextBoxFor(m=>m.Fname, new { @class = "form-control"})
-				</div>
-				@*<div class="col-md-3">
-					<label for="inputPassword4">Middle Name</label>
-					@Html.TextBoxFor(m=>m.Mname, new { @class = "form-control"})
-					</div>*@
-				<div class="col-md-4">
-					<label for="inputPassword4">Last Name</label>
-					@Html.TextBoxFor(m=>m.Gender, new { @class = "form-control"})
-				</div>
-			</div>
-
 			<div class="row">
-				<div class="col-md-4">
-					<label for="inputPassword4">Gender</label>
-					@Html.TextBoxFor(m=>m.Gender, new { @class = "form-control"})
-				</div>
-				<div class="col-md-4">
-					<label for="inputPassword4">Date of Birth</label>
-					@Html.TextBoxFor(m=>m.DOB, new { @class = "form-control"})
-				</div>
-				
-			</div>
+				<div class="col-lg-12">
+					<div class="accordion accordion-flush" id="per-details">
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button style="" class="accordion-button collapsed bg-primary " aria-expanded="true" type="button" data-bs-toggle="collapse" data-bs-target="#personal-details">
+									<div style="color:white">
+										Personal Details
+									</div>
+								</button>
+							</h2>
+							<div id="personal-details" class="accordion-collapse collapse show" data-bs-parent="#per-details">
+								<div class="accordion-body">
+									<form method="post" action="@Url.Action("Save","Candidate")">
+										<div>
+											<div class="row">
+												<div class="col-md-4">
+													<label for="inputEmail4">Title</label>
+													@Html.TextBoxFor(m=>m.Title, new { @class = "form-control"})
+												</div>
+												<div class="col-md-4">
+													<label for="inputPassword4">First Name</label>
+													@Html.TextBoxFor(m=>m.Fname, new { @class = "form-control"})
+												</div>
+												@*<div class="col-md-3">
+													<label for="inputPassword4">Middle Name</label>
+													@Html.TextBoxFor(m=>m.Mname, new { @class = "form-control"})
+													</div>*@
+												<div class="col-md-4">
+													<label for="inputPassword4">Last Name</label>
+													@Html.TextBoxFor(m=>m.Gender, new { @class = "form-control"})
+												</div>
+											</div>
+
+											<div class="row">
+												<div class="col-md-4">
+													<label for="inputPassword4">Gender</label>
+													@Html.TextBoxFor(m=>m.Gender, new { @class = "form-control"})
+												</div>
+												<div class="col-md-4">
+													<label for="inputPassword4">Date of Birth</label>
+													@Html.TextBoxFor(m=>m.DOB, new { @class = "form-control"})
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-4">
+													<label for="inputPassword4">Mobile Number</label>
+													@Html.TextBoxFor(m=>m.Mobile, new { @class = "form-control"})
+												</div>
+												<div class="col-md-4">
+													<label for="inputPassword4">Alternate Mobile No</label>
+													@Html.TextBoxFor(m=>m.AlternateMobile, new { @class = "form-control"})
+												</div>
+												<div class="col-md-4">
+													<label for="inputPassword4">Caste</label>
+													@Html.TextBoxFor(m=>m.Caste, new { @class = "form-control"})
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-6">
+													<label for="inputAddress">Present Address</label>
+													@Html.TextBoxFor(m=>m.PresentAddress, new { @class = "form-control"})
+												</div>
+												<div class="col-md-6">
+													<label for="inputAddress">Permanent Address</label>
+													@Html.TextBoxFor(m=>m.PermanentAddress, new { @class = "form-control"})
+												</div>
+											</div>
+
+											<div class="row">
+												<div class="col-md-6">
+													<label for="inputAddress">City</label>
+													@Html.TextBoxFor(m=>m.City, new { @class = "form-control"})
+												</div>
+												<div class="col-md-6">
+													<label for="inputAddress">Zip</label>
+													@Html.TextBoxFor(m=>m.Pincode, new { @class = "form-control"})
+												</div>
+											</div>
+
+											<div class="form-row">
+												@Html.HiddenFor(m=>m.CandidateId)
+												@Html.HiddenFor(m=>m.JobProfileId)
+
+											</div>
 
 
-			<div class="row">
-				<div class="col-md-4">
-					<label for="inputPassword4">Mobile Number</label>
-					@Html.TextBoxFor(m=>m.Mobile, new { @class = "form-control"})
-				</div>
-				<div class="col-md-4">
-					<label for="inputPassword4">Alternate Mobile No</label>
-					@Html.TextBoxFor(m=>m.AlternateMobile, new { @class = "form-control"})
-				</div>
-				<div class="col-md-4">
-					<label for="inputPassword4">Caste</label>
-					@Html.TextBoxFor(m=>m.Caste, new { @class = "form-control"})
-				</div>
-			</div>
+											@*<div class="form-row">
+												<div class="form-group col-md-6">
+												<label for="inputCity">City</label>
+												@Html.TextBoxFor(m=>m.City, new { @class = "form-control"})
+												</div>
+												<div class="form-group col-md-4">
+												<label for="inputState">State</label>
+												<select id="inputState" class="form-control">
+												<option selected>Choose...</option>
+												<option>...</option>
+												</select>
+												</div>
+												<div class="form-group col-md-2">
+												<label for="inputZip">Zip</label>
+												@Html.TextBoxFor(m=>m.Pincode, new { @class = "form-control"})
+												</div>
+												</div>*@
+											@*  <div class="form-group">
+												<div class="form-check">
+												<input class="form-check-input" type="checkbox" id="gridCheck">
+												<label class="form-check-label" for="gridCheck">
+												Check me out
+												</label>
+												</div>
+												</div>*@
+											<hr />
 
-			<div class="row">
-				<div class="col-md-6">
-					<label for="inputAddress">Present Address</label>
-					@Html.TextBoxFor(m=>m.PresentAddress, new { @class = "form-control"})
-				</div>
-				<div class="col-md-6">
-					<label for="inputAddress">Permanent Address</label>
-					@Html.TextBoxFor(m=>m.PermanentAddress, new { @class = "form-control"})
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-md-6">
-					<label for="inputAddress">City</label>
-					@Html.TextBoxFor(m=>m.City, new { @class = "form-control"})
-				</div>
-				<div class="col-md-6">
-					<label for="inputAddress">Zip</label>
-					@Html.TextBoxFor(m=>m.Pincode, new { @class = "form-control"})
-				</div>
-			</div>
-
-			<div class="form-row">
-				@Html.HiddenFor(m=>m.CandidateId)
-				@Html.HiddenFor(m=>m.JobProfileId)
-
-			</div>
-
-
-			@*<div class="form-row">
-				<div class="form-group col-md-6">
-					<label for="inputCity">City</label>
-					@Html.TextBoxFor(m=>m.City, new { @class = "form-control"})
-				</div>
-				 <div class="form-group col-md-4">
-					<label for="inputState">State</label>
-					<select id="inputState" class="form-control">
-					<option selected>Choose...</option>
-					<option>...</option>
-					</select>
+										</div>
+										<div class="row">
+											<div class="col-md-10">
+											</div>
+											<div class="col-md-2">
+												<button type="submit" class="btn btn-primary pull-right col-md-12">Save</button>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
 					</div>
-				<div class="form-group col-md-2">
-					<label for="inputZip">Zip</label>
-					@Html.TextBoxFor(m=>m.Pincode, new { @class = "form-control"})
 				</div>
-			</div>*@
-			@*  <div class="form-group">
-				<div class="form-check">
-				<input class="form-check-input" type="checkbox" id="gridCheck">
-				<label class="form-check-label" for="gridCheck">
-				Check me out
-				</label>
-				</div>
-				</div>*@
-				<br/><br/>
-			<button type="submit" class="btn btn-primary">Submit</button>
 			</div>
-		
-		</form>
-			</div>
-		</div>
-		
 
+
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="accordion accordion-flush" id="edu-details">
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button style="" class="accordion-button collapsed bg-primary" aria-expanded="true" type="button" data-bs-toggle="collapse" data-bs-target="#educational-details">
+									<div style="color:white">
+										Educational Details
+									</div>
+								</button>
+							</h2>
+							<div id="educational-details" class="accordion-collapse collapse show" data-bs-parent="#edu-details">
+								<div class="accordion-body">
+									<form method="post" action="@Url.Action("SaveEducationalDetails","Candidate")">
+										@for (int i = 0; i < Model.EducationalDetails.Count; i++)
+										{
+
+											<div class="row">
+												<div class="col-md-4">
+													@Html.HiddenFor(m=>m.JobProfileId)
+													@Html.HiddenFor(m=>m.EducationalDetails[i].id)
+													<label for="inputEmail4">Qualification</label>
+													@Html.TextBoxFor(m=>m.EducationalDetails[i].Qualification, new { @class = "form-control"})
+												</div>
+												<div class="col-md-2">
+													<label for="inputPassword4">Year Of Passing</label>
+													@Html.TextBoxFor(m=>m.EducationalDetails[i].YearOfPassing, new { @class = "form-control"})
+												</div>
+												<div class="col-md-4">
+													<label for="inputPassword4">Board/University</label>
+													@Html.TextBoxFor(m=>m.EducationalDetails[i].Board, new { @class = "form-control"})
+												</div>
+												<div class="col-md-2">
+													<label for="inputPassword4">Percentage</label>
+													@Html.TextBoxFor(m=>m.EducationalDetails[i].Percentage, new { @class = "form-control"})
+												</div>
+											</div>
+										}
+										<hr />
+										<div class="row">
+											<div class="col-md-10">
+											</div>
+											<div class="col-md-2">
+												<button type="submit" class="btn btn-primary pull-right col-md-12">Save</button>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="accordion accordion-flush" id="doc-details">
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button style="" class="accordion-button collapsed bg-primary" aria-expanded="true" type="button" data-bs-toggle="collapse" data-bs-target="#documents-details">
+									<div style="color:white">
+										Upload Documents
+									</div>
+								</button>
+							</h2>
+							<div id="documents-details" class="accordion-collapse collapse show" data-bs-parent="#doc-details">
+								<div class="accordion-body">
+									<form method="post" enctype="multipart/form-data" asp-controller="Candidate" asp-action="FileUpload">
+										<div class="row">
+											<div class="col-md-6">
+												<label for="inputEmail4">File Type</label>
+												<input name="fileType" class="form-control" type="text" />
+											</div>
+											<div class="col-md-6">
+												<label for="inputPassword4">Upload File</label>
+												<input type="file" name="files" class="form-control" />
+											</div>
+											@Html.HiddenFor(m=>m.JobProfileId)
+										</div>
+
+										<br />  <br />
+										<hr />
+										<div class="row">
+											<div class="col-md-10">
+											</div>
+											<div class="col-md-2">
+												<button type="submit" class="btn btn-primary pull-right col-md-12">Save</button>
+											</div>
+										</div>
+									</form>
+									<div>
+										<table class="table" style="width:100%">
+											<thead>
+												<tr>
+													<th>
+														File Name
+													</th>
+													<th>
+														File Type
+													</th>
+
+													<th>
+														Uploaded Date
+													</th>
+													<th></th>
+												</tr>
+											</thead>
+											<tbody>
+												@foreach (var item in Model.Files)
+												{
+													<tr>
+														<td>
+															@Html.DisplayFor(modelItem => item.Name)
+														</td>
+
+														<td>
+															@Html.DisplayFor(modelItem => item.FileType)
+														</td>
+														<td>
+															@Html.DisplayFor(modelItem => item.Createddate)
+														</td>
+													</tr>
+												}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-lg-10">
+					
+			    </div>
+				<div class="col-lg-2">
+					<form method="post" action="@Url.Action("JobApply","Candidate")">
+						@Html.HiddenFor(m=>m.CandidateId)
+						@Html.HiddenFor(m=>m.JobProfileId)
+						<input type="submit" class="btn btn-warning col-lg-12" value = "Apply for Job"/>
+			     	</form>
+			    </div>
+			</div>
 	</main>
 </div>
+
+

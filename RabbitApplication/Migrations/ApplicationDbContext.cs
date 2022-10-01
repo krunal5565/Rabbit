@@ -18,5 +18,6 @@ namespace RabbitApplication.Data
         public DbSet<Candidate> Candidate { get; set; }
         public DbSet<CandidateJobProfileMapping> CandidateJobProfileMapping { get; set; }
         public DbSet<CandidateFile> CandidateFiles { get; set; }
+        public DbSet<EducationalDetails> EducationalDetails { get; set; }
     }
 }

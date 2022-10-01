@@ -11,6 +11,8 @@ using System.Linq;
 using System.Security.Claims;
 using RabbitApplication.Helpers;
 using RabbitApplication.Entity;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace FundaClearApp.Controllers
 {
@@ -19,20 +21,52 @@ namespace FundaClearApp.Controllers
         public string connectionString;
 
         private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _config;
 
-        public CandidateController(ApplicationDbContext context)
+        public CandidateController(ApplicationDbContext context, IConfiguration config)
         {
             _context = context;
+            _config = config;
         }
 
-     
-        
         public IActionResult JobApplySuccess()
         {
             return View();
 
         }
-        
+
+        [HttpPost]
+        public IActionResult Save(CandidateModel model)
+        {
+            string emailId = User.Identity.Name;
+            Candidate entityCandidate = _context.Candidate.Where(x => x.Email == emailId).FirstOrDefault();
+
+            if (entityCandidate != null)
+            {
+                entityCandidate.Fname = model.Fname;
+                entityCandidate.CandidateId = model.CandidateId;
+                entityCandidate.Lname = model.Lname;
+                entityCandidate.Mname = model.Mname;
+                entityCandidate.Title = model.Title;
+                entityCandidate.PermanentAddress = model.PermanentAddress;
+                entityCandidate.PresentAddress = model.PresentAddress;
+                entityCandidate.Mobile = model.Mobile;
+                entityCandidate.Email = entityCandidate.Email;
+                entityCandidate.AlternateMobile = model.AlternateMobile;
+                entityCandidate.Gender = model.Gender;
+                entityCandidate.DOB = model.DOB;
+                entityCandidate.Caste = model.Caste;
+                entityCandidate.City = model.City;
+                entityCandidate.Pincode = model.Pincode;
+
+                _context.Candidate.Update(entityCandidate);
+
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("details", "Candidate", new { id = model.JobProfileId });
+        }
+
         [HttpPost]
         public IActionResult JobApply(CandidateModel model)
         {
@@ -41,30 +75,13 @@ namespace FundaClearApp.Controllers
 
             if(objCandidate != null)
             {
-                objCandidate.Fname = model.Fname;
-                objCandidate.CandidateId = model.CandidateId;
-                objCandidate.Lname = model.Lname;
-                objCandidate.Mname = model.Mname;
-                objCandidate.Title = model.Title;
-                objCandidate.PermanentAddress = model.PermanentAddress;
-                objCandidate.PresentAddress = model.PresentAddress;
-                objCandidate.Mobile = model.Mobile;
-                objCandidate.Email = model.Email;
-                objCandidate.AlternateMobile = model.AlternateMobile;
-                objCandidate.Gender = model.Gender;
-                objCandidate.DOB = model.DOB;
-                objCandidate.Caste = model.Caste;
-                objCandidate.City = model.City;
-                objCandidate.Pincode = model.Pincode;
-
-                _context.Candidate.Update(objCandidate);
-
+                
                 CandidateJobProfileMapping objCandidateJobProfileMapping = new CandidateJobProfileMapping();
                 objCandidateJobProfileMapping.CandidateJobProfileMappingId = Guid.NewGuid().ToString();
                 objCandidateJobProfileMapping.JobProfileId = model.JobProfileId;
                 objCandidateJobProfileMapping.Candidateid = model.CandidateId;
                 objCandidateJobProfileMapping.JobAppliedDate = DateTime.Now;
-
+                objCandidateJobProfileMapping.Createddate = DateTime.Now;
                 _context.CandidateJobProfileMapping.Add(objCandidateJobProfileMapping);
 
                 _context.SaveChanges();
@@ -74,6 +91,84 @@ namespace FundaClearApp.Controllers
             return RedirectToAction("JobApplySuccess", "Candidate");
         }
 
+        public async Task<IActionResult> FileUpload(List<IFormFile> files, string fileType, string jobProfileId)
+        {
+            long size = files.Sum(f => f.Length);
+
+            var filePaths = new List<string>();
+            foreach (var formFile in files)
+            {
+                if (formFile.Length > 0)
+                {
+
+                    var filePath = _config.GetSection("FilePath").Value + formFile.FileName;
+
+                    filePaths.Add(filePath);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await formFile.CopyToAsync(stream);
+                    }
+
+                    CandidateFile objCandidateFile = new CandidateFile();
+                    objCandidateFile.Name = formFile.FileName;
+                    objCandidateFile.CandidateFileId = Guid.NewGuid().ToString();
+                    objCandidateFile.CandidateId = _context.LoginDetails.Where(x => x.Username == User.Identity.Name).FirstOrDefault().CandidateId;
+                    objCandidateFile.FileType = fileType;
+                    objCandidateFile.FilePath = filePath;
+                    objCandidateFile.IsActive = true;
+                    objCandidateFile.Createddate = DateTime.Now;
+
+                    _context.CandidateFiles.Add(objCandidateFile);
+                    _context.SaveChanges();
+
+                }
+            }
+            // process uploaded files
+            // Don't rely on or trust the FileName property without validation.
+
+            return RedirectToAction("details", "Candidate", new { id = jobProfileId });
+        }
+
+
+        [HttpPost]
+        public ActionResult SaveEducationalDetails(CandidateModel model)
+        {
+            string emailId = User.Identity.Name;
+
+            Candidate entityCandidate = _context.Candidate.Where(x => x.Email == emailId).FirstOrDefault();
+
+            if(model.EducationalDetails != null)
+            {
+                foreach (var data in model.EducationalDetails)
+                {
+                    EducationalDetails objEducationalDetails = null;
+
+                    if (data.id > 0)
+                    {
+                         objEducationalDetails = _context.EducationalDetails.Where(x => x.id == data.id).FirstOrDefault();
+
+                        objEducationalDetails.Qualification = data.Qualification;
+                        objEducationalDetails.Board = data.Board;
+                        objEducationalDetails.YearOfPassing = data.YearOfPassing;
+                        objEducationalDetails.Percentage = data.Percentage;
+                        _context.Update(objEducationalDetails);
+
+                    }
+                    else
+                    {
+                         objEducationalDetails = new EducationalDetails();
+                         objEducationalDetails = ApplicationHelper.BindEducationDetailsModelToEntity(data);
+                         objEducationalDetails.CandidateId = entityCandidate.CandidateId;
+                        _context.Add(objEducationalDetails);
+                    }
+                   
+                    _context.SaveChanges();
+                }
+            }
+
+            return RedirectToAction("details", "Candidate", new { id= model.JobProfileId });
+        }
 
         public ViewResult Details(string id)
         {
@@ -83,14 +178,45 @@ namespace FundaClearApp.Controllers
             {
                 string emailId = User.Identity.Name;
 
-               Candidate entityCandidate = _context.Candidate.Where(x=>x.Email == emailId).FirstOrDefault();
+                Candidate entityCandidate = _context.Candidate.Where(x=>x.Email == emailId).FirstOrDefault();
 
-                objCandidateModel = ApplicationHelper.BindCandidateHelperData(entityCandidate);
-                objCandidateModel.JobProfileId = id;
+                if(entityCandidate != null)
+                {
 
+                    objCandidateModel = ApplicationHelper.BindCandidateHelperData(entityCandidate);
+                    objCandidateModel.JobProfileId = id;
 
+                    List<EducationalDetails> educationalDetails = _context.EducationalDetails.Where(x => x.CandidateId == entityCandidate.CandidateId).ToList();
+
+                    objCandidateModel.EducationalDetails = new List<EducationalDetailsModel>();
+                    objCandidateModel.Files = new List<CandidateFileModel>();
+
+                    foreach (EducationalDetails ed in educationalDetails)
+                    {
+                        EducationalDetailsModel objEducationalDetailsModel = new EducationalDetailsModel();
+                        objEducationalDetailsModel.Percentage = ed.Percentage;
+                        objEducationalDetailsModel.Board = ed.Board;
+                        objEducationalDetailsModel.YearOfPassing = ed.YearOfPassing;
+                        objEducationalDetailsModel.Qualification = ed.Qualification;
+                        objEducationalDetailsModel.id = ed.id;
+                        objCandidateModel.EducationalDetails.Add(objEducationalDetailsModel);
+                    }
+
+                    objCandidateModel.EducationalDetails.Add(new EducationalDetailsModel());
+
+                    List<CandidateFile> files = _context.CandidateFiles.Where(x => x.CandidateId == entityCandidate.CandidateId).ToList();
+
+                    foreach (CandidateFile file in files)
+                    {
+                        CandidateFileModel model = new CandidateFileModel();
+                        model.Name = file.Name;
+                        model.FileType = file.FileType;
+                        model.Createddate = file.Createddate;
+                        objCandidateModel.Files.Add(model);
+                    }
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }

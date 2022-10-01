@@ -5,7 +5,21 @@ namespace RabbitApplication.Helpers
 {
     public class ApplicationHelper
     {
-        
+        public static EducationalDetails BindEducationDetailsModelToEntity(EducationalDetailsModel model)
+        {
+            EducationalDetails educationalDetails = new EducationalDetails();
+
+            if(model != null)
+            {
+                educationalDetails.Qualification = model.Qualification;
+                educationalDetails.Board = model.Board;
+                educationalDetails.YearOfPassing = model.YearOfPassing;
+                educationalDetails.Percentage = model.Percentage;
+            }
+
+            return educationalDetails;
+        }
+
         public static JobProfile BindJobProfileModelToEntity(JobProfileModel jobProfileModel)
         {
             JobProfile jobProfile = new JobProfile();

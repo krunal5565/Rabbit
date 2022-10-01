@@ -66,6 +66,7 @@ namespace RabbitApplication.Controllers
 
             JobProfileModel objJobProfileModel = ApplicationHelper.BindJobProfileEntityToModel(jobProfile);
 
+         
             if (jobProfile == null)
             {
                 return NotFound();
@@ -96,45 +97,7 @@ namespace RabbitApplication.Controllers
         }
 
 
-        public async Task<IActionResult> FileUpload(List<IFormFile> files, string fileType)
-        {
-                long size = files.Sum(f => f.Length);
-
-                var filePaths = new List<string>();
-                foreach (var formFile in files)
-                {
-                    if (formFile.Length > 0)
-                    {
-                        
-                        var filePath = _config.GetSection("FilePath").Value + formFile.FileName; 
-
-                        filePaths.Add(filePath);
-
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await formFile.CopyToAsync(stream);
-                        }
-
-                    CandidateFile objCandidateFile = new CandidateFile();
-                    objCandidateFile.Name = formFile.FileName;
-                    objCandidateFile.CandidateFileId = Guid.NewGuid().ToString();
-                    objCandidateFile.CandidateId = _context.LoginDetails.Where(x => x.Username == User.Identity.Name).FirstOrDefault().CandidateId;
-                    objCandidateFile.FileType = fileType;
-                    objCandidateFile.FilePath = filePath;
-                    objCandidateFile.IsActive = true;
-                    objCandidateFile.Createddate = DateTime.Now;
-
-                    _context.CandidateFiles.Add(objCandidateFile);
-                    _context.SaveChanges();
-
-                    }
-                }
-            // process uploaded files
-            // Don't rely on or trust the FileName property without validation.
-
-            return RedirectToAction(nameof(files));
-        }
-
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(JobProfileModel jobProfileModel)
