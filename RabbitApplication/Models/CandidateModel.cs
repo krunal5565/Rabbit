@@ -3,6 +3,14 @@ using System.Collections.Generic;
 
 namespace RabbitApplication.Models
 {
+    public class JobApplySuccessModel
+    {
+        public string CandidateId { get; set; }
+        public string JobApplicationDate { get; set; }
+        public string AkNo { get; set; }
+        public string JobProfileName { get; set; }
+    }
+
     public class CandidateModel: LoginDetailsModel
     {
         public long Id { get; set; }

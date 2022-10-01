@@ -24,6 +24,7 @@
 						<div class="box">
 							<img src="~/Website/assets/img/values-1.png" class="img-fluid" alt="">
 							<h3>@Html.DisplayFor(modelItem => item.Name)</h3>
+								<h5>Number of positions : @Html.DisplayFor(modelItem => item.NumberOfPositions)</h5>
 							@*<p>	@Html.Raw(item.Description)</p>*@
 							<span style="">
 								<a href="@Url.Action("CareersDetails","JobProfile", new {id = item.JobProfileId})" class="btn-sm btn-primary pull-right"> View Details </a>

@@ -4,26 +4,29 @@
 	ViewData["Title"] = "Details";
 	Layout = "~/Views/Shared/_GuestLayout.cshtml";
 }
-<div style="padding-left:50px">
-	<h4>JobProfile Details</h4>
-	<hr />
-	<div style="border:1px solid #ebf0f6;background-color: #ebf0f6; border-radius:4px; padding:15px;margin:10px;">
-		<dl class="row">
-			<dd class="col-sm-10">
-				<b> @Html.DisplayFor(model => model.Name) </b>
-				<br />
-				Number of Positions : @Html.DisplayFor(model => model.NumberOfPositions)
-			</dd>
-			<br />
-			<br />
-			<hr />
-		</dl>
-		<dl class="row" style="border-top:5px solid white">
-			<dd class="col-sm-10">
-				<br />
-				<u>Description</u> <br />
-				@Html.Raw(Model.Description)
+
+<section id="services" class="services">
+	<div class="container" data-aos="fade-up">
+		<header class="section-header">
+			<h2>Job Profile Details</h2>
+			<p>@Html.DisplayFor(model => model.Name) </p>
+		Number of Positions :	@Html.DisplayFor(model => model.NumberOfPositions)
+		<div>
+				<a href="@Url.Action("details", "Candidate", new {id = Model.JobProfileId})" class="btn btn-primary"><span>Apply</span> <i class="bi bi-arrow-right"></i></a>
+		</div>
+	
+		</header>
+		<div class="row gy-4">
+			<div class="col-lg-12 col-md-12" data-aos="fade-up" data-aos-delay="200">
+				<div class="" style="border:1px solid #ddd; padding: 20px ; border-radius : 4px;">			
+						<a href="@Url.Action("index", "home")" style="float:right" class=""><span>Back To List</span></a>
+			
+					<h3>Job Description</h3>
+					<p>@Html.Raw(Model.Description)</p>		
+					
+				</div>
+			</div>
+		</div>
 	</div>
-	<div>
-		<a asp-action="Careers">Back to List</a>
-	</div>
+</section>
+

@@ -29,9 +29,17 @@ namespace FundaClearApp.Controllers
             _config = config;
         }
 
-        public IActionResult JobApplySuccess()
+        public IActionResult JobApplySuccess(string id)
         {
-            return View();
+            JobApplySuccessModel objJobApplySuccessModel = new JobApplySuccessModel();
+            objJobApplySuccessModel.AkNo = id;
+          //  objJobApplySuccessModel.JO
+
+            string emailId = User.Identity.Name;
+            Candidate entityCandidate = _context.Candidate.Where(x => x.Email == emailId).FirstOrDefault();
+
+
+            return View(objJobApplySuccessModel);
 
         }
 
@@ -71,13 +79,17 @@ namespace FundaClearApp.Controllers
         public IActionResult JobApply(CandidateModel model)
         {
             string emailId = User.Identity.Name;
+            string ackNo = "";
+
             Candidate objCandidate =  _context.Candidate.Where(x => x.Email == emailId).FirstOrDefault();
 
-            if(objCandidate != null)
+            ackNo = Convert.ToString(DateTime.Now.Year+ DateTime.Now.Month + DateTime.Now.Day + DateTime.Now.Hour + DateTime.Now.Minute + objCandidate.Id);
+
+            if (objCandidate != null)
             {
-                
+               
                 CandidateJobProfileMapping objCandidateJobProfileMapping = new CandidateJobProfileMapping();
-                objCandidateJobProfileMapping.CandidateJobProfileMappingId = Guid.NewGuid().ToString();
+                objCandidateJobProfileMapping.CandidateJobProfileMappingId = ackNo;
                 objCandidateJobProfileMapping.JobProfileId = model.JobProfileId;
                 objCandidateJobProfileMapping.Candidateid = model.CandidateId;
                 objCandidateJobProfileMapping.JobAppliedDate = DateTime.Now;
@@ -88,7 +100,7 @@ namespace FundaClearApp.Controllers
 
             }
 
-            return RedirectToAction("JobApplySuccess", "Candidate");
+            return RedirectToAction("JobApplySuccess", "Candidate", new {id = ackNo });
         }
 
         public async Task<IActionResult> FileUpload(List<IFormFile> files, string fileType, string jobProfileId)
