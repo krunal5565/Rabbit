@@ -12,9 +12,9 @@
 		<div class="container" data-aos="fade-up">
 			<header class="section-header">
 				<p>Open Positions</p>
-				<br/>
+				<br />
 				<h2>We are always looking for creative, talented and passionate people.</h2>
-				
+
 			</header>
 
 			<div class="row">
@@ -24,20 +24,13 @@
 						<div class="box">
 							<img src="~/Website/assets/img/values-1.png" class="img-fluid" alt="">
 							<h3>@Html.DisplayFor(modelItem => item.Name)</h3>
-								<h5>Number of positions : @Html.DisplayFor(modelItem => item.NumberOfPositions)</h5>
-							@*<p>	@Html.Raw(item.Description)</p>*@
+							<h5>Number of positions : @Html.DisplayFor(modelItem => item.NumberOfPositions)</h5>
+							
 							<span style="">
 								<a href="@Url.Action("CareersDetails","JobProfile", new {id = item.JobProfileId})" class="btn-sm btn-primary pull-right"> View Details </a>
 								&nbsp
 
-							@*	@if (User.Identity.IsAuthenticated)
-								{
-									<a href="@Url.Action("Details", "Candidate", new {@id = item.JobProfileId})" class="btn-sm btn-primary pull-right"> Apply </a>
-								}
-								else
-								{
-									<a href="@Url.Action("Login", "Candidate")" class="btn-sm btn-primary pull-right"> Apply </a>
-								}*@
+
 							</span>
 						</div>
 					</div>

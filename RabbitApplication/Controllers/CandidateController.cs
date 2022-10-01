@@ -34,7 +34,7 @@ namespace FundaClearApp.Controllers
         {
             JobApplySuccessModel objJobApplySuccessModel = new JobApplySuccessModel();
             objJobApplySuccessModel.AkNo = id;
-   
+
             string emailId = User.Identity.Name;
             Candidate entityCandidate = _context.Candidate.Where(x => x.Email == emailId).FirstOrDefault();
 
@@ -42,7 +42,7 @@ namespace FundaClearApp.Controllers
         }
 
         private void ValidateCandidateDetails(CandidateModel model)
-		{
+        {
             if (String.IsNullOrEmpty(model.Title))
             {
                 ModelState.AddModelError("title", "Please enter Title");
@@ -78,13 +78,35 @@ namespace FundaClearApp.Controllers
 
         }
 
+        private string GetCandidateId()
+        {
+            string candidateId = string.Empty;
+
+            try
+            {
+                string emailId = User.Identity.Name;
+                Candidate entityCandidate = _context.Candidate.Where(x => x.Email == emailId).FirstOrDefault();
+
+                if (entityCandidate != null)
+                {
+                    candidateId = entityCandidate.CandidateId;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return candidateId;
+        }
+
         [HttpPost]
         public IActionResult Save(CandidateModel model)
         {
             string emailId = User.Identity.Name;
             Candidate entityCandidate = _context.Candidate.Where(x => x.Email == emailId).FirstOrDefault();
 
-            ValidateCandidateDetails(model); 
+            ValidateCandidateDetails(model);
 
             if (ModelState.IsValid)
             {
@@ -100,7 +122,7 @@ namespace FundaClearApp.Controllers
                     entityCandidate.Mobile = model.Mobile;
                     entityCandidate.Email = entityCandidate.Email;
                     entityCandidate.AlternateMobile = model.AlternateMobile;
-                    entityCandidate.Gender = model.Gender;
+                    //entityCandidate.Gender = model.Gender;
                     entityCandidate.DOB = model.DOB;
                     entityCandidate.Caste = model.Caste;
                     entityCandidate.City = model.City;
@@ -110,7 +132,7 @@ namespace FundaClearApp.Controllers
 
                     _context.SaveChanges();
                 }
-                return RedirectToAction("details", "Candidate", new { id = model.JobProfileId });
+                return RedirectToAction("details", "Candidate", new { id = model.CandidateJobProfileMappingId });
 
             }
 
@@ -127,19 +149,19 @@ namespace FundaClearApp.Controllers
 
             ValidateCandidateDetails(ApplicationHelper.BindCandidateHelperData(objCandidate));
 
-            if(ModelState.IsValid)
-			{
+            if (ModelState.IsValid)
+            {
                 ackNo = Convert.ToString(DateTime.Now.Year + "" + DateTime.Now.Month + "" + DateTime.Now.Day + "" + DateTime.Now.Hour + "" + DateTime.Now.Minute + "" + objCandidate.Id);
 
                 if (objCandidate != null)
                 {
-                    CandidateJobProfileMapping objCandidateJobProfileMapping = new CandidateJobProfileMapping();
-                    objCandidateJobProfileMapping.CandidateJobProfileMappingId = ackNo;
-                    objCandidateJobProfileMapping.JobProfileId = model.JobProfileId;
-                    objCandidateJobProfileMapping.Candidateid = model.CandidateId;
+                    CandidateJobProfileMapping objCandidateJobProfileMapping = _context.CandidateJobProfileMapping.
+                            Where(x => x.CandidateJobProfileMappingId == model.CandidateJobProfileMappingId).FirstOrDefault();
+
                     objCandidateJobProfileMapping.JobAppliedDate = DateTime.Now;
-                    objCandidateJobProfileMapping.Createddate = DateTime.Now;
-                    _context.CandidateJobProfileMapping.Add(objCandidateJobProfileMapping);
+                    objCandidateJobProfileMapping.Status = "Submitted";
+                    objCandidateJobProfileMapping.AknoNumber = ackNo; 
+                    _context.CandidateJobProfileMapping.Update(objCandidateJobProfileMapping);
 
                     _context.SaveChanges();
 
@@ -150,19 +172,19 @@ namespace FundaClearApp.Controllers
             return View("Details", GetCandidateDetails(model.JobProfileId));
         }
 
-        public async Task<IActionResult> FileUpload(List<IFormFile> files, string fileType, string jobProfileId)
+        public async Task<IActionResult> FileUpload(List<IFormFile> files, string fileType, string CandidateJobProfileMappingId)
         {
-         
-            if(String.IsNullOrEmpty(fileType))
-			{
-                ModelState.AddModelError("FileType", "Please enter file type");
-                return View("Details", GetCandidateDetails(jobProfileId));
-			}
 
-            if(files == null || files.Count() == 0)
+            if (String.IsNullOrEmpty(fileType))
+            {
+                ModelState.AddModelError("FileType", "Please enter file type");
+                return View("Details", GetCandidateDetails(CandidateJobProfileMappingId));
+            }
+
+            if (files == null || files.Count() == 0)
             {
                 ModelState.AddModelError("Files", "Please upload files");
-                return View("Details", GetCandidateDetails(jobProfileId));
+                return View("Details", GetCandidateDetails(CandidateJobProfileMappingId));
             }
 
             var filePaths = new List<string>();
@@ -193,7 +215,7 @@ namespace FundaClearApp.Controllers
                 }
             }
 
-            return RedirectToAction("details", "Candidate", new { id = jobProfileId });
+            return RedirectToAction("details", "Candidate", new { id = CandidateJobProfileMappingId });
         }
 
 
@@ -235,20 +257,22 @@ namespace FundaClearApp.Controllers
                     }
                 }
             }
-            return RedirectToAction("details", "Candidate", new { id = candidateModel.JobProfileId });
+            return RedirectToAction("details", "Candidate", new { id = candidateModel.CandidateJobProfileMappingId });
         }
 
-        private CandidateModel GetCandidateDetails(string jobProfileId)
-		{
+        private CandidateModel GetCandidateDetails(string candidateJobProfileMappingId)
+        {
             CandidateModel objCandidateModel = new CandidateModel();
-            string emailId = User.Identity.Name;
+  
+            CandidateJobProfileMapping entityCandidateJobProfileMapping = _context.CandidateJobProfileMapping.
+                                                Where(x => x.CandidateJobProfileMappingId == candidateJobProfileMappingId).FirstOrDefault();
 
-            Candidate entityCandidate = _context.Candidate.Where(x => x.Email == emailId).FirstOrDefault();
-
+            Candidate entityCandidate = _context.Candidate.Where(x => x.CandidateId == entityCandidateJobProfileMapping.Candidateid).FirstOrDefault();
             if (entityCandidate != null)
             {
                 objCandidateModel = ApplicationHelper.BindCandidateHelperData(entityCandidate);
-                objCandidateModel.JobProfileId = jobProfileId;
+                objCandidateModel.JobProfileId = entityCandidateJobProfileMapping.JobProfileId;
+                objCandidateModel.CandidateJobProfileMappingId = candidateJobProfileMappingId;
 
                 objCandidateModel.EducationalDetails = new List<EducationalDetailsModel>();
                 objCandidateModel.EducationalDetails.AddRange(GetEducationalDetails(entityCandidate.CandidateId));
@@ -261,10 +285,67 @@ namespace FundaClearApp.Controllers
             return objCandidateModel;
         }
 
+        public IActionResult MyApplications()
+        {
+            List<MyJobApplications> lstCandidateMapping = new List<MyJobApplications>();
+
+            try
+            {
+                string candidateId = GetCandidateId();
+                List<CandidateJobProfileMapping> entityCandidateJobMapping = _context.CandidateJobProfileMapping.Where(x => x.Candidateid == candidateId).ToList();
+
+                if (entityCandidateJobMapping != null)
+                {
+                    foreach (var entity in entityCandidateJobMapping)
+                    {
+                        MyJobApplications objMyJobApplications = new MyJobApplications();
+                        objMyJobApplications.CandidateId = entity.Candidateid;
+                        objMyJobApplications.JobApplicationDate = entity.Createddate.ToLongDateString();
+                        objMyJobApplications.Status = entity.Status;
+                        objMyJobApplications.AkNo = entity.AknoNumber;
+                        objMyJobApplications.CandidateJobProfileMappingId = entity.CandidateJobProfileMappingId;
+                        objMyJobApplications.JobProfileName = _context.JobProfile.Where(x => x.JobProfileId == entity.JobProfileId).FirstOrDefault().Name;
+                        lstCandidateMapping.Add(objMyJobApplications);
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return View("MyApplications", lstCandidateMapping);
+        }
+
+        public IActionResult JobApply(string id)
+		{
+            string candidateJobProfileId = Guid.NewGuid().ToString(); 
+
+            try
+			{
+                string candidateId = GetCandidateId();
+                CandidateJobProfileMapping objCandidateJobProfileMapping = new CandidateJobProfileMapping();
+                objCandidateJobProfileMapping.CandidateJobProfileMappingId = candidateJobProfileId;
+                objCandidateJobProfileMapping.JobProfileId = id;
+                objCandidateJobProfileMapping.Status = "Draft";
+                objCandidateJobProfileMapping.Candidateid = candidateId;
+                objCandidateJobProfileMapping.Createddate = DateTime.Now;
+                _context.CandidateJobProfileMapping.Add(objCandidateJobProfileMapping);
+                _context.SaveChanges();
+            }
+            catch(Exception ex)
+			{
+
+			}
+            return RedirectToAction("Details", new { @id = candidateJobProfileId });
+        }
+
         public ViewResult Details(string id)
         {
             CandidateModel objCandidateModel = new CandidateModel();
 
+            // objCandidateModel.Gender = new Selec
             try
             {
                 objCandidateModel = GetCandidateDetails(id);

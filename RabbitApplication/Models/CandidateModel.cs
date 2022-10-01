@@ -11,6 +11,22 @@ namespace RabbitApplication.Models
         public string JobProfileName { get; set; }
     }
 
+    public class MyJobApplications
+    {
+        public string CandidateId { get; set; }
+        public string JobApplicationDate { get; set; }
+        public string AkNo { get; set; }
+        public string CandidateJobProfileMappingId { get; set; }
+        public string Status { get; set; }
+        public string JobProfileName { get; set; }
+    }
+
+    public class Dropdown
+    {
+        public int Id { get; set; }
+        public string Text { get; set; }
+    }
+
     public class CandidateModel
     {
         public long Id { get; set; }
@@ -21,7 +37,7 @@ namespace RabbitApplication.Models
         public string Fname { get; set; }
         public string Mname { get; set; }
         public string Lname { get; set; }
-        public string Gender { get; set; }
+        public IEnumerable<Dropdown> Gender { get; set; }
         public string Caste { get; set; }
         public DateTime? DOB { get; set; }
         public string PresentAddress { get; set; }
@@ -34,6 +50,7 @@ namespace RabbitApplication.Models
         public DateTime Createddate { get; set; }
         public DateTime Updateddate { get; set; }
         public bool IsActive { get; set; }
+        public string CandidateJobProfileMappingId { get; set; }
 
         public List<CandidateFileModel> Files { get; set; }
         public List<EducationalDetailsModel> EducationalDetails { get; set; }

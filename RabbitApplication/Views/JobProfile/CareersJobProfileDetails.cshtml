@@ -14,7 +14,7 @@
 			<div>
 				@if (User.Identity.IsAuthenticated)
 				{
-					<a href="@Url.Action("details", "Candidate", new {id = Model.JobProfileId})" class="btn btn-primary"><span>Apply</span> <i class="bi bi-arrow-right"></i></a>
+					<a href="@Url.Action("JobApply", "Candidate", new {id = Model.JobProfileId})" class="btn btn-primary"><span>Apply</span> <i class="bi bi-arrow-right"></i></a>
 				}
 				else
 				{
