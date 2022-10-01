@@ -34,6 +34,7 @@
 								<div class="accordion-body">
 									<form method="post" action="@Url.Action("Save","Candidate")">
 										<div>
+											@Html.ValidationSummary()
 											<div class="row">
 												<div class="col-md-4">
 													<label for="inputEmail4">Title</label>
@@ -49,7 +50,7 @@
 													</div>*@
 												<div class="col-md-4">
 													<label for="inputPassword4">Last Name</label>
-													@Html.TextBoxFor(m=>m.Gender, new { @class = "form-control"})
+													@Html.TextBoxFor(m=>m.Lname, new { @class = "form-control"})
 												</div>
 											</div>
 
@@ -164,30 +165,35 @@
 							<div id="educational-details" class="accordion-collapse collapse show" data-bs-parent="#edu-details">
 								<div class="accordion-body">
 									<form method="post" action="@Url.Action("SaveEducationalDetails","Candidate")">
-										@for (int i = 0; i < Model.EducationalDetails.Count; i++)
-										{
 
-											<div class="row">
-												<div class="col-md-4">
-													@Html.HiddenFor(m=>m.JobProfileId)
-													@Html.HiddenFor(m=>m.EducationalDetails[i].id)
-													<label for="inputEmail4">Qualification</label>
-													@Html.TextBoxFor(m=>m.EducationalDetails[i].Qualification, new { @class = "form-control"})
+										@if (Model.EducationalDetails != null)
+										{
+											@for (int i = 0; i < Model.EducationalDetails.Count; i++)
+											{
+
+												<div class="row">
+													<div class="col-md-4">
+														@Html.HiddenFor(m=>m.JobProfileId)
+														@Html.HiddenFor(m=>m.EducationalDetails[i].id)
+														<label for="inputEmail4">Qualification</label>
+														@Html.TextBoxFor(m=>m.EducationalDetails[i].Qualification, new { @class = "form-control"})
+													</div>
+													<div class="col-md-2">
+														<label for="inputPassword4">Year Of Passing</label>
+														@Html.TextBoxFor(m=>m.EducationalDetails[i].YearOfPassing, new { @class = "form-control"})
+													</div>
+													<div class="col-md-4">
+														<label for="inputPassword4">Board/University</label>
+														@Html.TextBoxFor(m=>m.EducationalDetails[i].Board, new { @class = "form-control"})
+													</div>
+													<div class="col-md-2">
+														<label for="inputPassword4">Percentage</label>
+														@Html.TextBoxFor(m=>m.EducationalDetails[i].Percentage, new { @class = "form-control"})
+													</div>
 												</div>
-												<div class="col-md-2">
-													<label for="inputPassword4">Year Of Passing</label>
-													@Html.TextBoxFor(m=>m.EducationalDetails[i].YearOfPassing, new { @class = "form-control"})
-												</div>
-												<div class="col-md-4">
-													<label for="inputPassword4">Board/University</label>
-													@Html.TextBoxFor(m=>m.EducationalDetails[i].Board, new { @class = "form-control"})
-												</div>
-												<div class="col-md-2">
-													<label for="inputPassword4">Percentage</label>
-													@Html.TextBoxFor(m=>m.EducationalDetails[i].Percentage, new { @class = "form-control"})
-												</div>
-											</div>
+											}
 										}
+
 										<hr />
 										<div class="row">
 											<div class="col-md-10">
@@ -239,19 +245,19 @@
 											<div class="col-md-2">
 												<button type="submit" class="btn btn-primary pull-right col-md-12">Save</button>
 											</div>
+											<br/>
 										</div>
 									</form>
 									<div>
 										<table class="table" style="width:100%">
 											<thead>
-												<tr>
+												<tr style="background-color:#ddd">
 													<th>
 														File Name
 													</th>
 													<th>
 														File Type
 													</th>
-
 													<th>
 														Uploaded Date
 													</th>
@@ -259,21 +265,25 @@
 												</tr>
 											</thead>
 											<tbody>
-												@foreach (var item in Model.Files)
-												{
-													<tr>
-														<td>
-															@Html.DisplayFor(modelItem => item.Name)
-														</td>
+												@if (Model.Files != null)
+												{	@foreach (var item in Model.Files)
+													{
+														<tr>
+															<td>
+																@Html.DisplayFor(modelItem => item.Name)
+															</td>
 
-														<td>
-															@Html.DisplayFor(modelItem => item.FileType)
-														</td>
-														<td>
-															@Html.DisplayFor(modelItem => item.Createddate)
-														</td>
-													</tr>
+															<td>
+																@Html.DisplayFor(modelItem => item.FileType)
+															</td>
+															<td>
+																@Html.DisplayFor(modelItem => item.Createddate)
+															</td>
+														</tr>
+													}
+
 												}
+
 											</tbody>
 										</table>
 									</div>
@@ -286,15 +296,14 @@
 
 			<div class="row">
 				<div class="col-lg-10">
-					
-			    </div>
+				</div>
 				<div class="col-lg-2">
 					<form method="post" action="@Url.Action("JobApply","Candidate")">
 						@Html.HiddenFor(m=>m.CandidateId)
 						@Html.HiddenFor(m=>m.JobProfileId)
-						<input type="submit" class="btn btn-warning col-lg-12" value = "Apply for Job"/>
-			     	</form>
-			    </div>
+						<input type="submit" class="btn btn-warning col-lg-12" value="Apply for Job" />
+					</form>
+				</div>
 			</div>
 	</main>
 </div>

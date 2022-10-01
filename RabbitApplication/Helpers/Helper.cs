@@ -79,7 +79,6 @@ namespace RabbitApplication.Helpers
                 objCandidateModel.PresentAddress = candidate.PresentAddress;
                 objCandidateModel.Title = candidate.Title;
                 objCandidateModel.DOB = candidate.DOB;
-                objCandidateModel.Username = candidate.Email;
             }
 
             return objCandidateModel;

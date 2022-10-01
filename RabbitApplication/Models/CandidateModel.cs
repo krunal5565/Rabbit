@@ -11,7 +11,7 @@ namespace RabbitApplication.Models
         public string JobProfileName { get; set; }
     }
 
-    public class CandidateModel: LoginDetailsModel
+    public class CandidateModel
     {
         public long Id { get; set; }
         public string CandidateId { get; set; }
