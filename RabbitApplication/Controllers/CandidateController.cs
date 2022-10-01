@@ -55,25 +55,21 @@ namespace FundaClearApp.Controllers
             {
                 ModelState.AddModelError("lname", "Please enter lname");
             }
+            else if (String.IsNullOrEmpty(model.Gender))
+            {
+                ModelState.AddModelError("gender", "Please enter Gender");
+            }
+            else if (String.IsNullOrEmpty(model.Caste))
+            {
+                ModelState.AddModelError("caste", "Please enter caste");
+            }
             else if (String.IsNullOrEmpty(model.Mobile))
             {
                 ModelState.AddModelError("mobile", "Please enter mobile");
             }
-            else if (String.IsNullOrEmpty(model.AlternateMobile))
-            {
-                ModelState.AddModelError("alternate-mobile", "Please enter alternate number");
-            }
-            else if (String.IsNullOrEmpty(model.PermanentAddress))
-            {
-                ModelState.AddModelError("mobile", "Please enter Permanent Address");
-            }
             else if (String.IsNullOrEmpty(model.PresentAddress))
             {
                 ModelState.AddModelError("mobile", "Please enter Present Address");
-            }
-            else if (String.IsNullOrEmpty(model.Pincode))
-            {
-                ModelState.AddModelError("mobile", "Please enter Pincode");
             }
 
         }
@@ -132,11 +128,12 @@ namespace FundaClearApp.Controllers
 
                     _context.SaveChanges();
                 }
+                TempData["CandidateUpdateSuccess"] = "Candidate personal details updated successfully";
                 return RedirectToAction("details", "Candidate", new { id = model.CandidateJobProfileMappingId });
 
             }
 
-            return View("Details", GetCandidateDetails(model.JobProfileId));
+            return View("Details", GetCandidateDetails(model.CandidateJobProfileMappingId));
         }
 
         [HttpPost]
@@ -212,6 +209,7 @@ namespace FundaClearApp.Controllers
 
                     _context.CandidateFiles.Add(objCandidateFile);
                     _context.SaveChanges();
+                    TempData["CandidateUpdateSuccess"] = "Document file uploaded successfully.";
                 }
             }
 
@@ -254,6 +252,8 @@ namespace FundaClearApp.Controllers
                             _context.Add(objEducationalDetails);
                         }
                         _context.SaveChanges();
+
+                        TempData["CandidateUpdateSuccess"] = "Educational Details updated successfully.";
                     }
                 }
             }
