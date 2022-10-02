@@ -263,17 +263,17 @@
 										<form method="post" enctype="multipart/form-data" asp-controller="Candidate" asp-action="FileUpload">
 											<div class="row">
 												<div class="col-md-4">
-													<label for="inputEmail4">File Name</label>
-													<input type="text" accept=".pdf,.doc" name="fileName" class="form-control" />
+													<label for="inputEmail4">Document Name</label>
+													<input type="text" accept=".jpg" name="fileName" class="form-control" />
 												</div>
 												<div class="col-md-4">
-													<label for="inputEmail4">File Type</label>
+													<label for="inputEmail4">Document Type</label>
 													@Html.DropDownList("FileType", new SelectList(Enum.GetValues(typeof(DocumentType))),
 												"Select Document Type",
 												new { @class = "form-control" })
 												</div>
 												<div class="col-md-4">
-													<label for="inputPassword4">Upload File</label>
+													<label for="inputPassword4">Upload Document</label>
 													<input type="file" name="files" class="form-control" />
 												</div>
 												@Html.HiddenFor(m=>m.CandidateJobProfileMappingId)
@@ -330,7 +330,7 @@
 																@Html.DisplayFor(modelItem => item.Createddate)
 															</td>
 															<td>
-																<a href="@item.FilePath"> View File </a>
+																<a target="_blank" href="@item.FilePath"> View File </a>
 															</td>
 														</tr>
 													}

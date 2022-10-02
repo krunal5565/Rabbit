@@ -195,7 +195,20 @@ namespace FundaClearApp.Controllers
             {
                 if (formFile.Length > 0)
                 {
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot" + _config.GetSection("CandidateFilesPath").Value, formFile.FileName);
+                    if ((formFile.Length / 1048576.0) > 1)
+                    {
+                        ModelState.AddModelError("FileSize", "File limit. Max 1MB file is allowed");
+                        return View("Details", GetCandidateDetails(CandidateJobProfileMappingId));
+                    }
+
+                    if (Path.GetExtension(formFile.FileName) != ".pdf" && Path.GetExtension(formFile.FileName) != ".jpg" && Path.GetExtension(formFile.FileName) != ".jpeg")
+                    {
+                        ModelState.AddModelError("FileType", "File format not supported. Only .pdf / .jpg / .jpeg allowed.");
+                        return View("Details", GetCandidateDetails(CandidateJobProfileMappingId));
+                    }
+
+                    string documentName = Path.GetFileNameWithoutExtension(formFile.FileName) + "_" + Guid.NewGuid().ToString()+ Path.GetExtension(formFile.FileName);
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot" + _config.GetSection("CandidateFilesPath").Value, documentName);
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
@@ -207,7 +220,7 @@ namespace FundaClearApp.Controllers
                     objCandidateFile.CandidateFileId = Guid.NewGuid().ToString();
                     objCandidateFile.CandidateId = _context.LoginDetails.Where(x => x.Username == User.Identity.Name).FirstOrDefault().CandidateId;
                     objCandidateFile.FileType = fileType;
-                    objCandidateFile.FilePath = Path.Combine(_config.GetSection("CandidateFilesPath").Value, formFile.FileName);
+                    objCandidateFile.FilePath = Path.Combine(_config.GetSection("CandidateFilesPath").Value, documentName);
                     objCandidateFile.IsActive = true;
                     objCandidateFile.Createddate = DateTime.Now;
 
