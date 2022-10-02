@@ -4,6 +4,36 @@
 	ViewData["Title"] = "Edit";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<style>
+	.note-editor.note-airframe .note-editing-area .note-editable, .note-editor.note-frame .note-editing-area .note-editable {
+		padding: 10px;
+		overflow: auto;
+		word-wrap: break-word;
+		background-color: white;
+		border: 1px solid #ddd;
+	}
+
+	..btn-default.active, .btn-default:active, .open > .dropdown-toggle.btn-default
+	{
+		background-color: #e6e6e6;
+	}
+
+	.note-btn-group btn-group note-style .note-btn-group btn-group note-style
+	{
+		background-color:white;
+		border:1px solid #ddd;
+
+	}
+	.note-btn {
+		border-color: #ccc;
+	}
+
+	.note-toolbar{
+		background-color: #f5f5f5;
+	}
+</style>
+
 <div style="padding-left:50px">
 	<h4>Edit JobProfile</h4>
 	<hr />
@@ -43,7 +73,7 @@
 
 			</div>
 
-			<div class="col-md-4">
+			<div class="col-md-7">
 				<div class="form-group">
 					<label asp-for="Description" class="control-label"></label>
 					@Html.TextAreaFor(m=>m.Description , new {@class = "form-control summernote", @id="summernote"})
