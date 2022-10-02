@@ -14,6 +14,7 @@ using RabbitApplication.Entity;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Hosting;
 
 namespace FundaClearApp.Controllers
 {
@@ -23,11 +24,13 @@ namespace FundaClearApp.Controllers
 
         private readonly ApplicationDbContext _context;
         private readonly IConfiguration _config;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
-        public CandidateController(ApplicationDbContext context, IConfiguration config)
+        public CandidateController(ApplicationDbContext context, IConfiguration config, IHostingEnvironment hostingEnvironment)
         {
             _context = context;
             _config = config;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public IActionResult JobApplySuccess(string id)
@@ -184,14 +187,11 @@ namespace FundaClearApp.Controllers
                 return View("Details", GetCandidateDetails(CandidateJobProfileMappingId));
             }
 
-            var filePaths = new List<string>();
             foreach (var formFile in files)
             {
                 if (formFile.Length > 0)
                 {
-                    var filePath = _config.GetSection("FilePath").Value + formFile.FileName;
-
-                    filePaths.Add(filePath);
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot"+ _config.GetSection("CandidateFilesPath").Value, formFile.FileName);
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
@@ -203,7 +203,7 @@ namespace FundaClearApp.Controllers
                     objCandidateFile.CandidateFileId = Guid.NewGuid().ToString();
                     objCandidateFile.CandidateId = _context.LoginDetails.Where(x => x.Username == User.Identity.Name).FirstOrDefault().CandidateId;
                     objCandidateFile.FileType = fileType;
-                    objCandidateFile.FilePath = filePath;
+                    objCandidateFile.FilePath = Path.Combine(_config.GetSection("CandidateFilesPath").Value,formFile.FileName);
                     objCandidateFile.IsActive = true;
                     objCandidateFile.Createddate = DateTime.Now;
 
@@ -273,7 +273,7 @@ namespace FundaClearApp.Controllers
                 objCandidateModel = ApplicationHelper.BindCandidateHelperData(entityCandidate);
                 objCandidateModel.JobProfileId = entityCandidateJobProfileMapping.JobProfileId;
                 objCandidateModel.CandidateJobProfileMappingId = candidateJobProfileMappingId;
-                objCandidateModel.JobProfileStatus = entityCandidateJobProfileMapping.Status; 
+                objCandidateModel.JobProfileStatus = entityCandidateJobProfileMapping.Status;
                 objCandidateModel.EducationalDetails = new List<EducationalDetailsModel>();
                 objCandidateModel.EducationalDetails.AddRange(GetEducationalDetails(entityCandidate.CandidateId));
                 objCandidateModel.EducationalDetails.Add(new EducationalDetailsModel()); ;
@@ -403,6 +403,7 @@ namespace FundaClearApp.Controllers
                     model.Name = objCandidateFile.Name;
                     model.FileType = objCandidateFile.FileType;
                     model.Createddate = objCandidateFile.Createddate;
+                    model.FilePath = objCandidateFile.FilePath;
                     lstCandidateFiles.Add(model);
                 }
             }
@@ -449,7 +450,7 @@ namespace FundaClearApp.Controllers
 
                     CandidateJobProfileMapping objCandidateJobProfileMapping = _context.CandidateJobProfileMapping.Where(x => x.Candidateid == objCandidate.CandidateId).FirstOrDefault();
 
-                    if(objCandidateJobProfileMapping != null)
+                    if (objCandidateJobProfileMapping != null)
                     {
                         objCandidateModel.JobProfileName = _context.JobProfile.Where(x => x.JobProfileId == objCandidateJobProfileMapping.JobProfileId).FirstOrDefault().Name;
 

@@ -289,6 +289,9 @@
 													<th>
 														Uploaded Date
 													</th>
+													<th>
+														View File
+													</th>
 													<th></th>
 												</tr>
 											</thead>
@@ -306,6 +309,9 @@
 															</td>
 															<td>
 																@Html.DisplayFor(modelItem => item.Createddate)
+															</td>
+															<td>
+																<a href="@item.FilePath"> View File </a>
 															</td>
 														</tr>
 													}
