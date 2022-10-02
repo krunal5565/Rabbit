@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace RabbitApplication.Models
 {
@@ -39,7 +40,11 @@ namespace RabbitApplication.Models
         public string Mname { get; set; }
         public string Lname { get; set; }
         public string Gender { get; set; }
+
+    
         public string Caste { get; set; }
+
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yy}")]
         public DateTime? DOB { get; set; }
         public string PresentAddress { get; set; }
         public string PermanentAddress { get; set; }

@@ -191,7 +191,7 @@ namespace FundaClearApp.Controllers
             {
                 if (formFile.Length > 0)
                 {
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot"+ _config.GetSection("CandidateFilesPath").Value, formFile.FileName);
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot" + _config.GetSection("CandidateFilesPath").Value, formFile.FileName);
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
@@ -203,7 +203,7 @@ namespace FundaClearApp.Controllers
                     objCandidateFile.CandidateFileId = Guid.NewGuid().ToString();
                     objCandidateFile.CandidateId = _context.LoginDetails.Where(x => x.Username == User.Identity.Name).FirstOrDefault().CandidateId;
                     objCandidateFile.FileType = fileType;
-                    objCandidateFile.FilePath = Path.Combine(_config.GetSection("CandidateFilesPath").Value,formFile.FileName);
+                    objCandidateFile.FilePath = Path.Combine(_config.GetSection("CandidateFilesPath").Value, formFile.FileName);
                     objCandidateFile.IsActive = true;
                     objCandidateFile.Createddate = DateTime.Now;
 
@@ -246,10 +246,18 @@ namespace FundaClearApp.Controllers
                         }
                         else
                         {
-                            objEducationalDetails = new EducationalDetails();
-                            objEducationalDetails = ApplicationHelper.BindEducationDetailsModelToEntity(objCandidateModel);
-                            objEducationalDetails.CandidateId = entityCandidate.CandidateId;
-                            _context.Add(objEducationalDetails);
+                            if ((!string.IsNullOrEmpty(objCandidateModel.Board))
+                                && (!string.IsNullOrEmpty(objCandidateModel.Percentage))
+                                    && (!string.IsNullOrEmpty(objCandidateModel.Percentage))
+                                    && (!string.IsNullOrEmpty(objCandidateModel.Qualification)))
+                            {
+                                objEducationalDetails = new EducationalDetails();
+                                objEducationalDetails = ApplicationHelper.BindEducationDetailsModelToEntity(objCandidateModel);
+                                objEducationalDetails.CandidateId = entityCandidate.CandidateId;
+                                _context.Add(objEducationalDetails);
+
+                            }
+
                         }
                         _context.SaveChanges();
 
@@ -260,6 +268,11 @@ namespace FundaClearApp.Controllers
             return RedirectToAction("details", "Candidate", new { id = candidateModel.CandidateJobProfileMappingId });
         }
 
+        public IActionResult Date()
+        {
+            return View("Datetime");
+        }
+
         private CandidateModel GetCandidateDetails(string candidateJobProfileMappingId)
         {
             CandidateModel objCandidateModel = new CandidateModel();
@@ -267,21 +280,25 @@ namespace FundaClearApp.Controllers
             CandidateJobProfileMapping entityCandidateJobProfileMapping = _context.CandidateJobProfileMapping.
                                                 Where(x => x.CandidateJobProfileMappingId == candidateJobProfileMappingId).FirstOrDefault();
 
-            Candidate entityCandidate = _context.Candidate.Where(x => x.CandidateId == entityCandidateJobProfileMapping.Candidateid).FirstOrDefault();
-            if (entityCandidate != null)
+            if (entityCandidateJobProfileMapping != null)
             {
-                objCandidateModel = ApplicationHelper.BindCandidateHelperData(entityCandidate);
-                objCandidateModel.JobProfileId = entityCandidateJobProfileMapping.JobProfileId;
-                objCandidateModel.CandidateJobProfileMappingId = candidateJobProfileMappingId;
-                objCandidateModel.JobProfileStatus = entityCandidateJobProfileMapping.Status;
-                objCandidateModel.EducationalDetails = new List<EducationalDetailsModel>();
-                objCandidateModel.EducationalDetails.AddRange(GetEducationalDetails(entityCandidate.CandidateId));
-                objCandidateModel.EducationalDetails.Add(new EducationalDetailsModel()); ;
+                Candidate entityCandidate = _context.Candidate.Where(x => x.CandidateId == entityCandidateJobProfileMapping.Candidateid).FirstOrDefault();
+                if (entityCandidate != null)
+                {
+                    objCandidateModel = ApplicationHelper.BindCandidateHelperData(entityCandidate);
+                    objCandidateModel.JobProfileId = entityCandidateJobProfileMapping.JobProfileId;
+                    objCandidateModel.CandidateJobProfileMappingId = candidateJobProfileMappingId;
+                    objCandidateModel.JobProfileStatus = entityCandidateJobProfileMapping.Status;
+                    objCandidateModel.EducationalDetails = new List<EducationalDetailsModel>();
+                    objCandidateModel.EducationalDetails.AddRange(GetEducationalDetails(entityCandidate.CandidateId));
+                    objCandidateModel.EducationalDetails.Add(new EducationalDetailsModel()); ;
 
-                objCandidateModel.Files = new List<CandidateFileModel>();
-                objCandidateModel.Files.AddRange(GetFileDetails(entityCandidate.CandidateId));
+                    objCandidateModel.Files = new List<CandidateFileModel>();
+                    objCandidateModel.Files.AddRange(GetFileDetails(entityCandidate.CandidateId));
 
+                }
             }
+
             return objCandidateModel;
         }
 
@@ -373,7 +390,7 @@ namespace FundaClearApp.Controllers
             return RedirectToAction("Details", new { @id = candidateJobProfileId });
         }
 
-        public ViewResult Details(string id)
+        public ViewResult AdminDetails(string id)
         {
             CandidateModel objCandidateModel = new CandidateModel();
 
@@ -386,6 +403,31 @@ namespace FundaClearApp.Controllers
             {
 
             }
+            return View("Admin/Details", objCandidateModel);
+        }
+
+
+        public IActionResult Details(string id)
+        {
+            CandidateModel objCandidateModel = new CandidateModel();
+
+            if (User.Identity.IsAuthenticated)
+            {
+                try
+                {
+                    objCandidateModel = GetCandidateDetails(id);
+                }
+                catch (Exception ex)
+                {
+
+                }
+                return View(objCandidateModel);
+            }
+            else
+            {
+                RedirectToAction("Login", "Candidate");
+            }
+
             return View(objCandidateModel);
         }
 
