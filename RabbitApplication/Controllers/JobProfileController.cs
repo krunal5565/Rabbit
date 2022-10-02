@@ -25,36 +25,48 @@ namespace RabbitApplication.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var jobProfile = await _context.JobProfile.ToListAsync();
-
             List<JobProfileModel> lstJobProfileModel = new List<JobProfileModel>();
 
-            foreach (JobProfile objJobProfile in jobProfile)
+            if (User.Identity.IsAuthenticated)
             {
-                lstJobProfileModel.Add(ApplicationHelper.BindJobProfileEntityToModel(objJobProfile));
-            }
+                var jobProfile = await _context.JobProfile.ToListAsync();
+                foreach (JobProfile objJobProfile in jobProfile)
+                {
+                    lstJobProfileModel.Add(ApplicationHelper.BindJobProfileEntityToModel(objJobProfile));
+                }
 
-            return View(lstJobProfileModel);
+                return View(lstJobProfileModel);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Candidate");
+            }
         }
 
         public async Task<IActionResult> Details(string id)
         {
-            if (string.IsNullOrEmpty(id))
+            if (User.Identity.IsAuthenticated)
             {
-                return NotFound();
+                if (string.IsNullOrEmpty(id))
+                {
+                    return NotFound();
+                }
+
+                var jobProfile = await _context.JobProfile.FirstOrDefaultAsync(m => m.JobProfileId == id);
+
+                JobProfileModel objJobProfileModel = ApplicationHelper.BindJobProfileEntityToModel(jobProfile);
+
+                if (jobProfile == null)
+                {
+                    return NotFound();
+                }
+
+                return View(objJobProfileModel);
             }
-
-            var jobProfile = await _context.JobProfile
-                .FirstOrDefaultAsync(m => m.JobProfileId == id);
-
-            JobProfileModel objJobProfileModel = ApplicationHelper.BindJobProfileEntityToModel(jobProfile);
-
-            if (jobProfile == null)
+            else
             {
-                return NotFound();
+                return RedirectToAction("Login", "Candidate");
             }
-
-            return View(objJobProfileModel);
         }
 
         public IActionResult Create()
@@ -62,87 +74,78 @@ namespace RabbitApplication.Controllers
             return View();
         }
 
-        [HttpGet]
-        public IActionResult FileUpload()
-        {
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult Files()
-        {
-            string candidateId = _context.LoginDetails.Where(x => x.Username == User.Identity.Name).FirstOrDefault().CandidateId;
-
-            var candidateFile = _context.CandidateFiles.Where(x => x.CandidateId == candidateId);
-
-            return View(candidateFile);
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(JobProfileModel jobProfileModel)
         {
-            if (ModelState.IsValid)
+            if (User.Identity.IsAuthenticated)
             {
-                if (jobProfileModel != null)
+                if (ModelState.IsValid)
                 {
-                    jobProfileModel.JobProfileId = Guid.NewGuid().ToString();
-                    JobProfile jobProfile = ApplicationHelper.BindJobProfileModelToEntity(jobProfileModel);
+                    if (jobProfileModel != null)
+                    {
+                        jobProfileModel.JobProfileId = Guid.NewGuid().ToString();
+                        JobProfile jobProfile = ApplicationHelper.BindJobProfileModelToEntity(jobProfileModel);
 
-                    _context.Add(jobProfile);
-                    await _context.SaveChangesAsync();
+                        _context.Add(jobProfile);
+                        await _context.SaveChangesAsync();
+                    }
+
+                    return RedirectToAction(nameof(Index));
                 }
-
-                return RedirectToAction(nameof(Index));
+                return View(jobProfileModel);
             }
-            return View(jobProfileModel);
-        }
-
-        public IActionResult Text()
-        {
-            PersonModel obj = new PersonModel();
-            obj.PersonalDetails = "krunal test";
-
-            return View("TextEditor", obj);
+            else
+            {
+                return RedirectToAction("Login", "Candidate");
+            }
         }
 
         public IActionResult CareersDetails(string id)
         {
-            if (string.IsNullOrEmpty(id))
-            {
-                return NotFound();
-            }
+                if (string.IsNullOrEmpty(id))
+                {
+                    return NotFound();
+                }
 
-            var jobProfile = _context.JobProfile
-                .FirstOrDefault(m => m.JobProfileId == id);
+                var jobProfile = _context.JobProfile
+                    .FirstOrDefault(m => m.JobProfileId == id);
 
-            JobProfileModel objJobProfileModel = ApplicationHelper.BindJobProfileEntityToModel(jobProfile);
+                JobProfileModel objJobProfileModel = ApplicationHelper.BindJobProfileEntityToModel(jobProfile);
 
-            if (jobProfile == null)
-            {
-                return NotFound();
-            }
+                if (jobProfile == null)
+                {
+                    return NotFound();
+                }
 
-            return View("CareersJobProfileDetails", objJobProfileModel);
+                return View("CareersJobProfileDetails", objJobProfileModel);
+            
         }
 
         // GET: JobProfile/Edit/5
         public IActionResult Edit(string id)
         {
-            if (string.IsNullOrEmpty(id))
+            if (User.Identity.IsAuthenticated)
             {
-                return NotFound();
+                if (string.IsNullOrEmpty(id))
+                {
+                    return NotFound();
+                }
+
+                var jobProfile = _context.JobProfile.Where(x => x.JobProfileId == id).FirstOrDefault();
+
+                JobProfileModel objJobProfileModel = ApplicationHelper.BindJobProfileEntityToModel(jobProfile);
+
+                if (objJobProfileModel == null)
+                {
+                    return NotFound();
+                }
+                return View(objJobProfileModel);
             }
-
-            var jobProfile = _context.JobProfile.Where(x => x.JobProfileId == id).FirstOrDefault();
-
-            JobProfileModel objJobProfileModel = ApplicationHelper.BindJobProfileEntityToModel(jobProfile);
-
-            if (objJobProfileModel == null)
+            else
             {
-                return NotFound();
+                return RedirectToAction("Login", "Candidate");
             }
-            return View(objJobProfileModel);
         }
 
 
@@ -150,70 +153,95 @@ namespace RabbitApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(JobProfileModel jobProfileModel)
         {
-            if (string.IsNullOrEmpty(jobProfileModel.JobProfileId))
+            if (User.Identity.IsAuthenticated)
             {
-                return NotFound();
-            }
+                if (string.IsNullOrEmpty(jobProfileModel.JobProfileId))
+                {
+                    return NotFound();
+                }
 
-            //  if (ModelState.IsValid)
+                //  if (ModelState.IsValid)
+                {
+                    try
+                    {
+                        var jobProfile = _context.JobProfile.Where(x => x.JobProfileId == jobProfileModel.JobProfileId).FirstOrDefault();
+
+                        jobProfile.NumberOfPositions = jobProfileModel.NumberOfPositions;
+                        jobProfile.EndDate = jobProfileModel.EndDate;
+                        jobProfile.Description = jobProfileModel.Description;
+                        jobProfile.StartDate = jobProfileModel.StartDate;
+                        jobProfile.Name = jobProfileModel.Name;
+
+                        _context.Update(jobProfile);
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        if (!JobProfileExists(jobProfileModel.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+                    return RedirectToAction(nameof(Index));
+                }
+                // return View(jobProfileModel);
+            }
+            else
             {
-                try
-                {
-                    var jobProfile = _context.JobProfile.Where(x => x.JobProfileId == jobProfileModel.JobProfileId).FirstOrDefault();
-
-                    jobProfile.NumberOfPositions = jobProfileModel.NumberOfPositions;
-                    jobProfile.EndDate = jobProfileModel.EndDate;
-                    jobProfile.Description = jobProfileModel.Description;
-                    jobProfile.StartDate = jobProfileModel.StartDate;
-                    jobProfile.Name = jobProfileModel.Name;
-
-                    _context.Update(jobProfile);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!JobProfileExists(jobProfileModel.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Login", "Candidate");
             }
-            return View(jobProfileModel);
         }
+
+
+        //[HttpGet]
+        //public IActionResult FileUpload()
+        //{
+        //    return View();
+        //}
+
+        //[HttpGet]
+        //public IActionResult Files()
+        //{
+        //    string candidateId = _context.LoginDetails.Where(x => x.Username == User.Identity.Name).FirstOrDefault().CandidateId;
+
+        //    var candidateFile = _context.CandidateFiles.Where(x => x.CandidateId == candidateId);
+
+        //    return View(candidateFile);
+        //}
+
 
         // GET: JobProfile/Delete/5
-        public async Task<IActionResult> Delete(long? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Delete(long? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var jobProfile = await _context.JobProfile
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (jobProfile == null)
-            {
-                return NotFound();
-            }
+        //    var jobProfile = await _context.JobProfile
+        //        .FirstOrDefaultAsync(m => m.Id == id);
+        //    if (jobProfile == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(jobProfile);
-        }
+        //    return View(jobProfile);
+        //}
 
         // POST: JobProfile/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(long id)
-        {
-            var jobProfile = await _context.JobProfile.FindAsync(id);
-            _context.JobProfile.Remove(jobProfile);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(long id)
+        //{
+        //    var jobProfile = await _context.JobProfile.FindAsync(id);
+        //    _context.JobProfile.Remove(jobProfile);
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         private bool JobProfileExists(long id)
         {
