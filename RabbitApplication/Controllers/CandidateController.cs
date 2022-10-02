@@ -62,6 +62,10 @@ namespace FundaClearApp.Controllers
             {
                 ModelState.AddModelError("gender", "Please enter Gender");
             }
+            else if (model.DOB == null || DateTime.MinValue == model.DOB || DateTime.MaxValue == model.DOB)
+            {
+                ModelState.AddModelError("dateofbirth", "Please enter Date of Birth");
+            }
             else if (String.IsNullOrEmpty(model.Caste))
             {
                 ModelState.AddModelError("caste", "Please enter caste");
