@@ -1,0 +1,346 @@
+﻿@using RabbitApplication.Helpers
+@using RabbitApplication.Models
+@model RabbitApplication.Models.CandidateModel
+
+<style>
+	.accordion-body {
+		border: 1px solid blue;
+		padding: 20px;
+	}
+
+	.row {
+		margin-top: 10px !important;
+	}
+</style>
+<div class="container">
+	<main role="main" class="pb-3">
+		<div>
+
+			<br /><br /><br /><br />
+			<div style="color:green">
+				@TempData["CandidateUpdateSuccess"]
+			</div>
+
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="accordion accordion-flush" id="per-details">
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button style="" class="accordion-button collapsed bg-primary " aria-expanded="true" type="button" data-bs-toggle="collapse" data-bs-target="#personal-details">
+									<div style="color:white">
+										Personal Details
+									</div>
+								</button>
+							</h2>
+							<div id="personal-details" class="accordion-collapse collapse show" data-bs-parent="#per-details">
+								<div class="accordion-body">
+									<form method="post" action="@Url.Action("Save","Candidate")">
+										<div>
+											@Html.ValidationSummary()
+											<div class="row">
+												<div class="col-md-4">
+													<label for="inputEmail4">Title</label>
+													@Html.DropDownListFor(m=>m.Title, new SelectList(Enum.GetValues(typeof(Title))),
+													"Select Title",
+													new { @class = "form-control" })
+												</div>
+												<div class="col-md-4">
+													<label for="inputPassword4">First Name</label>
+													@Html.TextBoxFor(m=>m.Fname, new { @class = "form-control"})
+												</div>
+												@*<div class="col-md-3">
+													<label for="inputPassword4">Middle Name</label>
+													@Html.TextBoxFor(m=>m.Mname, new { @class = "form-control"})
+													</div>*@
+												<div class="col-md-4">
+													<label for="inputPassword4">Last Name</label>
+													@Html.TextBoxFor(m=>m.Lname, new { @class = "form-control"})
+												</div>
+											</div>
+
+											<div class="row">
+												<div class="col-md-4">
+													<label for="inputPassword4">Gender</label>@Html.DropDownListFor(m=>m.Gender, new SelectList(Enum.GetValues(typeof(Gender))),
+													"Select Gender",
+													new { @class = "form-control" })
+												</div>
+												<div class="col-md-4">
+													<label for="inputPassword4">Date of Birth</label>
+													@Html.TextBoxFor(m=>m.DOB, new { @class = "form-control"})
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-4">
+													<label for="inputPassword4">Mobile Number</label>
+													@Html.TextBoxFor(m=>m.Mobile, new { @class = "form-control"})
+												</div>
+												<div class="col-md-4">
+													<label for="inputPassword4">Alternate Mobile No</label>
+													@Html.TextBoxFor(m=>m.AlternateMobile, new { @class = "form-control"})
+												</div>
+												<div class="col-md-4">
+													<label for="inputPassword4">Caste</label>
+													@Html.DropDownListFor(m=>m.Caste, new SelectList(Enum.GetValues(typeof(Caste))),
+													"Select Caste",
+													new { @class = "form-control" })
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-6">
+													<label for="inputAddress">Present Address</label>
+													@Html.TextAreaFor(m=>m.PresentAddress, new { @class = "form-control"})
+												</div>
+												<div class="col-md-6">
+													<label for="inputAddress">Permanent Address</label>
+													@Html.TextAreaFor(m=>m.PermanentAddress, new { @class = "form-control"})
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-6">
+													<label for="inputAddress">City</label>
+													@Html.TextBoxFor(m=>m.City, new { @class = "form-control"})
+												</div>
+												<div class="col-md-6">
+													<label for="inputAddress">Zip</label>
+													@Html.TextBoxFor(m=>m.Pincode, new { @class = "form-control"})
+												</div>
+											</div>
+											<div class="form-row">
+												@Html.HiddenFor(m=>m.CandidateId)
+												@Html.HiddenFor(m=>m.JobProfileId)
+												@Html.HiddenFor(m=>m.CandidateJobProfileMappingId)
+											</div>
+
+
+											@*<div class="form-row">
+												<div class="form-group col-md-6">
+												<label for="inputCity">City</label>
+												@Html.TextBoxFor(m=>m.City, new { @class = "form-control"})
+												</div>
+												<div class="form-group col-md-4">
+												<label for="inputState">State</label>
+												<select id="inputState" class="form-control">
+												<option selected>Choose...</option>
+												<option>...</option>
+												</select>
+												</div>
+												<div class="form-group col-md-2">
+												<label for="inputZip">Zip</label>
+												@Html.TextBoxFor(m=>m.Pincode, new { @class = "form-control"})
+												</div>
+												</div>*@
+											@*  <div class="form-group">
+												<div class="form-check">
+												<input class="form-check-input" type="checkbox" id="gridCheck">
+												<label class="form-check-label" for="gridCheck">
+												Check me out
+												</label>
+												</div>
+												</div>*@
+											<hr />
+
+										</div>
+										<div class="row">
+											<div class="col-md-10">
+											</div>
+											<div class="col-md-2">
+												@if (Model.JobProfileStatus != ApplicationHelper.JobProfileStatusSubmitted)
+												{
+													<button type="submit" class="btn btn-primary pull-right col-md-12">Save</button>
+												}
+
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="accordion accordion-flush" id="edu-details">
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button style="" class="accordion-button collapsed bg-primary" aria-expanded="true" type="button" data-bs-toggle="collapse" data-bs-target="#educational-details">
+									<div style="color:white">
+										Educational Details
+									</div>
+								</button>
+							</h2>
+							<div id="educational-details" class="accordion-collapse collapse show" data-bs-parent="#edu-details">
+								<div class="accordion-body">
+									<form method="post" action="@Url.Action("SaveEducationalDetails","Candidate")">
+
+										@if (Model.EducationalDetails != null)
+										{
+											@for (int i = 0; i < Model.EducationalDetails.Count; i++)
+											{
+
+												<div class="row">
+													<div class="col-md-4">
+														@Html.HiddenFor(m=>m.JobProfileId)
+														@Html.HiddenFor(m=>m.CandidateJobProfileMappingId)
+														@Html.HiddenFor(m=>m.EducationalDetails[i].id)
+														<label for="inputEmail4">Qualification</label>
+														@Html.TextBoxFor(m=>m.EducationalDetails[i].Qualification, new { @class = "form-control"})
+													</div>
+													<div class="col-md-2">
+														<label for="inputPassword4">Year Of Passing</label>
+														@Html.TextBoxFor(m=>m.EducationalDetails[i].YearOfPassing, new { @class = "form-control"})
+													</div>
+													<div class="col-md-4">
+														<label for="inputPassword4">Board/University</label>
+														@Html.TextBoxFor(m=>m.EducationalDetails[i].Board, new { @class = "form-control"})
+													</div>
+													<div class="col-md-2">
+														<label for="inputPassword4">Percentage</label>
+														@Html.TextBoxFor(m=>m.EducationalDetails[i].Percentage, new { @class = "form-control"})
+													</div>
+												</div>
+											}
+										}
+
+										<hr />
+										<div class="row">
+											<div class="col-md-10">
+											</div>
+											<div class="col-md-2">
+												@if (Model.JobProfileStatus != ApplicationHelper.JobProfileStatusSubmitted)
+												{
+													<button type="submit" class="btn btn-primary pull-right col-md-12">Save</button>
+												}
+											</div>
+
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="accordion accordion-flush" id="doc-details">
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button style="" class="accordion-button collapsed bg-primary" aria-expanded="true" type="button" data-bs-toggle="collapse" data-bs-target="#documents-details">
+									<div style="color:white">
+										Upload Documents
+									</div>
+								</button>
+							</h2>
+							<div id="documents-details" class="accordion-collapse collapse show" data-bs-parent="#doc-details">
+								<div class="accordion-body">
+									@if (Model.JobProfileStatus != ApplicationHelper.JobProfileStatusSubmitted)
+									{
+										<form method="post" enctype="multipart/form-data" asp-controller="Candidate" asp-action="FileUpload">
+											<div class="row">
+												<div class="col-md-4">
+													<label for="inputEmail4">File Name</label>
+													<input type="text" name="fileName" class="form-control" />
+												</div>
+												<div class="col-md-4">
+													<label for="inputEmail4">File Type</label>
+													@Html.DropDownList("FileType", new SelectList(Enum.GetValues(typeof(DocumentType))),
+												"Select Document Type",
+												new { @class = "form-control" })
+												</div>
+												<div class="col-md-4">
+													<label for="inputPassword4">Upload File</label>
+													<input type="file" name="files" class="form-control" />
+												</div>
+												@Html.HiddenFor(m=>m.CandidateJobProfileMappingId)
+											</div>
+
+											<br />  <br />
+											<hr />
+											<div class="row">
+												<div class="col-md-10">
+												</div>
+												<div class="col-md-2">
+													@if (Model.JobProfileStatus != ApplicationHelper.JobProfileStatusSubmitted)
+													{
+														<button type="submit" class="btn btn-primary pull-right col-md-12">Save</button>
+													}
+													<br /> <br />
+												</div>
+
+											</div>
+										</form>
+									}
+									<div>
+										<table class="table" style="width:100%">
+											<thead>
+												<tr style="background-color:#ddd">
+													<th>
+														File Name
+													</th>
+													<th>
+														File Type
+													</th>
+													<th>
+														Uploaded Date
+													</th>
+													<th>
+														View File
+													</th>
+													<th></th>
+												</tr>
+											</thead>
+											<tbody>
+												@if (Model.Files != null)
+												{	@foreach (var item in Model.Files)
+													{
+														<tr>
+															<td>
+																@Html.DisplayFor(modelItem => item.Name)
+															</td>
+
+															<td>
+																@Html.DisplayFor(modelItem => item.FileType)
+															</td>
+															<td>
+																@Html.DisplayFor(modelItem => item.Createddate)
+															</td>
+															<td>
+																<a href="@item.FilePath"> View File </a>
+															</td>
+														</tr>
+													}
+
+												}
+
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-lg-10">
+				</div>
+				<div class="col-lg-2">
+					<form method="post" action="@Url.Action("JobApply","Candidate")">
+						@Html.HiddenFor(m=>m.CandidateId)
+						@Html.HiddenFor(m=>m.JobProfileId)
+						@Html.HiddenFor(m=>m.CandidateJobProfileMappingId)
+						@if (Model.JobProfileStatus != ApplicationHelper.JobProfileStatusSubmitted)
+						{
+							<input type="submit" class="btn btn-warning col-lg-12" value="Apply for Job" />
+						}
+					</form>
+				</div>
+			</div>
+	</main>
+</div>
