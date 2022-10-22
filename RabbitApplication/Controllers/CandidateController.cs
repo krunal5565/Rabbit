@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using System.IO;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Hosting;
+using System.IO.Compression;
 
 namespace FundaClearApp.Controllers
 {
@@ -508,6 +509,49 @@ namespace FundaClearApp.Controllers
 
         //    return View("Admin/Files", candidateFile);
         //}
+
+        public IActionResult DownloadFiles(string id)
+        {
+            string contentType = "application/zip";
+
+            List<CandidateFile> entityFiles = _context.CandidateFiles.Where(x => x.CandidateId == id).ToList();
+
+            Candidate candidate = _context.Candidate.FirstOrDefault(x => x.CandidateId == id);
+
+            string zipName = candidate.Fname + "_" + candidate.Lname + "_"+DateTime.Now.Millisecond+".zip"; 
+
+            if (entityFiles != null && entityFiles.Count > 0)
+            {
+                using (var outputZipFileStream = new MemoryStream())
+                {
+                    using (var zipStream = new ZipArchive(outputZipFileStream, ZipArchiveMode.Create, true))
+                    {
+                        foreach (CandidateFile objCandidateFile in entityFiles)
+                        {
+                            string filepath = Directory.GetCurrentDirectory() + "\\wwwroot" + objCandidateFile.FilePath;//Change path here if required.
+                            var entry = zipStream.CreateEntry(Path.GetFileName(filepath));
+
+                            using (var entryStream = entry.Open())
+                            {
+                                using (var fs = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 0x1000, FileOptions.SequentialScan))
+                                {
+                                    fs.CopyTo(entryStream);
+                                }
+                            }
+                        }
+                    }
+                    return File(outputZipFileStream.ToArray(), contentType, zipName);
+                }
+            }
+            else // NO FILEs
+            {
+                using (var outputZipFileStream = new MemoryStream())
+                {
+
+                    return File(outputZipFileStream.ToArray(), contentType, "NO_FILES_"+ zipName);
+                }
+            }
+        }
 
         public IActionResult view(string id)
         {

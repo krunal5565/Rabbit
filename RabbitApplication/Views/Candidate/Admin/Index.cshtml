@@ -73,9 +73,11 @@
             </td>
        
             <td>
-        <a asp-action="View" asp-route-id="@item.CandidateId">Details</a>
-        
-       @*   <a asp-action="ViewFiles" asp-route-id="@item.CandidateId">View Files</a>*@
+                <a asp-action="DownloadFiles" asp-route-id="@item.CandidateId">DownloadFiles</a>
+                &nbsp;
+                <a asp-action="View" asp-route-id="@item.CandidateId">Details</a>
+
+                @*   <a asp-action="ViewFiles" asp-route-id="@item.CandidateId">View Files</a>*@
             </td>
         </tr>
 }
