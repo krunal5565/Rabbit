@@ -16,6 +16,8 @@ using System.IO;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Hosting;
 using System.IO.Compression;
+using iTextSharp.text.pdf;
+using iTextSharp.text;
 
 namespace FundaClearApp.Controllers
 {
@@ -500,18 +502,258 @@ namespace FundaClearApp.Controllers
             }
             return View();
         }
+        
+        public IActionResult DownloadDetails(string id)
+        {
+           string filePath = generatePDF(id);
+
+            byte[] fileBytes = GetFile(filePath);
+            return File(fileBytes, "application/pdf", Path.GetFileName(filePath));
+
+        }
+
+        private byte[] GetFile(string s)
+        {
+            System.IO.FileStream fs = System.IO.File.OpenRead(s);
+            byte[] data = new byte[fs.Length];
+            int br = fs.Read(data, 0, data.Length);
+            if (br != fs.Length)
+                throw new System.IO.IOException(s);
+            return data;
+        }
+
+        public IActionResult PrintDetails(string id)
+        {
+            generatePDF(id);
+
+            return null;
+        }
+
+        private string generatePDF(string candidateId)
+        {
+            string fileName = "";
+            string filePath = "";
+
+            Document doc = new Document(); 
+            PdfPTable tableLayout = new PdfPTable(4);
+        
+            PdfPTable headerDetailsLayout = new PdfPTable(3);
+            PdfPTable profileDetailsLAyout = new PdfPTable(2);
+
+          var candidateJobProfileDetails =  _context.CandidateJobProfileMapping.Where(x => x.Candidateid == candidateId && x.Status == "Submitted").ToList();
+
+          if(candidateJobProfileDetails != null && candidateJobProfileDetails.Count > 0)
+            {
+                var candiate = _context.Candidate.FirstOrDefault(x => x.CandidateId == candidateId);
+
+                fileName = candiate.Fname + " " + candiate.Lname + "_" + candiate.Id + DateTime.Now.Ticks+ "_Profile.pdf";
+
+                filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot" + _config.GetSection("CandidateFilesPath").Value, fileName); 
+
+                PdfWriter.GetInstance(doc, new FileStream(filePath, FileMode.Create));
+                doc.Open();
+
+                foreach (var data in candidateJobProfileDetails)
+                {
+                   string jobProfileName = _context.JobProfile.FirstOrDefault(x => x.JobProfileId == data.JobProfileId).Name;
+
+                    doc.Add(AddHeaderDetails(headerDetailsLayout, data.AknoNumber , data.JobAppliedDate, jobProfileName));
+                    doc.Add(AddProfileDetails(profileDetailsLAyout, data.CandidateJobProfileMappingId));
+                    doc.Add(AddEducationalDetails(tableLayout, candidateId));
+                    doc.Add(AddFileDetails(new PdfPTable(2), candidateId));
+                }
+                doc.Close();
+            }
+
+            return filePath;
+        }
+
+        private PdfPTable AddHeaderDetails(PdfPTable tableLayout, string ackNo, DateTime jobAppDate, string jobProfileName)
+        {
+            float[] headers = { 20, 20, 20 };
+
+            tableLayout.SetWidths(headers);
+            tableLayout.WidthPercentage = 80;
 
 
-        //[HttpGet]
-        //public IActionResult ViewFiles(string id)
-        //{
-        //    var candidateFile = _context.CandidateFiles.Where(x => x.CandidateId == id);
 
-        //    return View("Admin/Files", candidateFile);
-        //}
+            tableLayout.AddCell(new PdfPCell(new Phrase("Candidate Job Profile Details", new Font(Font.FontFamily.HELVETICA, 13, 1, new iTextSharp.text.BaseColor(153, 51, 0))))
+            {
+                Colspan = 4,
+                Border = 0,
+                Padding = 5,
+                PaddingBottom = 20,
+                HorizontalAlignment = Element.ALIGN_LEFT
+            });
+
+         
+                AddCellToHeader(tableLayout, "Job Profile Name");
+                AddCellToHeader(tableLayout, "Aknowledgment Number");
+                AddCellToHeader(tableLayout, "Job Applied Date");
+
+                AddCellToBody(tableLayout, jobProfileName);
+                AddCellToBody(tableLayout, ackNo);
+                AddCellToBody(tableLayout, Path.GetFileName(jobAppDate.Date.ToShortDateString()));
+
+            return tableLayout;
+        }
+
+
+        private PdfPTable AddProfileDetails(PdfPTable tableLayout, string candidateId)
+        {
+            float[] headers = { 20, 20 };
+
+            tableLayout.SetWidths(headers);
+            tableLayout.WidthPercentage = 80;
+
+            tableLayout.AddCell(new PdfPCell(new Phrase("Personal Profile Details", new Font(Font.FontFamily.HELVETICA, 13, 1, new iTextSharp.text.BaseColor(153, 51, 0))))
+            {
+                Colspan = 4,
+                Border = 0,
+                Padding = 5,
+                PaddingTop = 10,
+                PaddingBottom = 20,
+                HorizontalAlignment = Element.ALIGN_LEFT
+            });
+
+           CandidateModel objCandidateModel = GetCandidateDetails(candidateId);
+
+            if (objCandidateModel != null)
+            {
+                AddCellToHeader(tableLayout, "Field Name");
+                AddCellToHeader(tableLayout, "Field Details");
+
+                AddCellToBody(tableLayout, "Name");
+                AddCellToBody(tableLayout, objCandidateModel.Title  + " " +objCandidateModel.Fname + " "+ objCandidateModel.Lname );
+
+                AddCellToBody(tableLayout, "Email");
+                AddCellToBody(tableLayout, objCandidateModel.Email);
+
+                AddCellToBody(tableLayout, "Mobile No");
+                AddCellToBody(tableLayout, Path.GetFileName(objCandidateModel.Mobile));
+
+                AddCellToBody(tableLayout, "Alternate Mobile Number");
+                AddCellToBody(tableLayout, Path.GetFileName(objCandidateModel.AlternateMobile));
+
+                AddCellToBody(tableLayout, "Present Address");
+                AddCellToBody(tableLayout, Path.GetFileName(objCandidateModel.PresentAddress));
+
+                AddCellToBody(tableLayout, "Permanent Address");
+                AddCellToBody(tableLayout, Path.GetFileName(objCandidateModel.PermanentAddress));
+
+                AddCellToBody(tableLayout, "Pin Code");
+                AddCellToBody(tableLayout, Path.GetFileName(objCandidateModel.Pincode));
+
+                AddCellToBody(tableLayout, "Gender");
+                AddCellToBody(tableLayout, Path.GetFileName(objCandidateModel.Gender));
+
+                AddCellToBody(tableLayout, "Caste");
+                AddCellToBody(tableLayout, Path.GetFileName(objCandidateModel.Caste));
+
+                AddCellToBody(tableLayout, "Date of birth");
+                AddCellToBody(tableLayout, Path.GetFileName(objCandidateModel.DOB.Value.Date.ToShortDateString()));
+            }
+
+            return tableLayout;
+        }
+
+
+        private PdfPTable AddFileDetails(PdfPTable tableLayout, string candidateId)
+        {
+            float[] headers = {20,20}; 
+
+            tableLayout.SetWidths(headers); 
+            tableLayout.WidthPercentage = 80;
+
+            List<CandidateFileModel> lstCandidateFileDetails = GetFileDetails(candidateId);
+
+            if (lstCandidateFileDetails != null && lstCandidateFileDetails.Count > 0)
+            {
+                tableLayout.AddCell(new PdfPCell(new Phrase("Uploaded Files", new Font(Font.FontFamily.HELVETICA, 13, 1, new iTextSharp.text.BaseColor(153, 51, 0))))
+                {
+                    Colspan = 4,
+                    Border = 0,
+                    Padding = 5,
+                    PaddingTop = 10,
+                    PaddingBottom = 20,
+                    HorizontalAlignment = Element.ALIGN_LEFT
+                });
+
+                AddCellToHeader(tableLayout, "Name");
+                AddCellToHeader(tableLayout, "File Name");
+
+                foreach (var fileDetails in lstCandidateFileDetails)
+                {
+                    AddCellToBody(tableLayout, fileDetails.Name);
+                    AddCellToBody(tableLayout, Path.GetFileName(fileDetails.FilePath));
+                }
+            }
+
+           
+            return tableLayout;
+        }
+
+        private PdfPTable AddEducationalDetails(PdfPTable tableLayout, string candidateId)
+        {
+            float[] headers = { 20, 20, 30, 30 };
+
+            tableLayout.SetWidths(headers);
+            tableLayout.WidthPercentage = 80;
+
+            tableLayout.AddCell(new PdfPCell(new Phrase("Educational Details", new Font(Font.FontFamily.HELVETICA, 13, 1, new iTextSharp.text.BaseColor(153, 51, 0))))
+            {
+                Colspan = 4,
+                Border = 0,
+                PaddingBottom = 20,
+                PaddingTop = 10,
+                HorizontalAlignment = Element.ALIGN_LEFT
+            });
+
+            List<EducationalDetailsModel> lstEducationalDetalis =   GetEducationalDetails(candidateId);
+         
+            if(lstEducationalDetalis != null && lstEducationalDetalis.Count > 0)
+            {
+                AddCellToHeader(tableLayout, "Qualification");
+                AddCellToHeader(tableLayout, "Year of Passing");
+                AddCellToHeader(tableLayout, "University/Board");
+                AddCellToHeader(tableLayout, "Percentage");
+
+                foreach (var educationalDetails in lstEducationalDetalis)
+                {
+                    AddCellToBody(tableLayout, educationalDetails.Qualification);
+                    AddCellToBody(tableLayout, educationalDetails.YearOfPassing);
+                    AddCellToBody(tableLayout, educationalDetails.Board);
+                    AddCellToBody(tableLayout, educationalDetails.Percentage);
+                }
+             
+            }
+            return tableLayout;
+        }
+      
+        private static void AddCellToHeader(PdfPTable tableLayout, string cellText)
+        {
+            tableLayout.AddCell(new PdfPCell(new Phrase(cellText, new Font(Font.FontFamily.HELVETICA, 8, 1, iTextSharp.text.BaseColor.WHITE)))
+            {
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                Padding = 5,
+                BackgroundColor = new iTextSharp.text.BaseColor(0, 51, 102)
+            });
+        }
+        // Method to add single cell to the body  
+        private static void AddCellToBody(PdfPTable tableLayout, string cellText)
+        {
+            tableLayout.AddCell(new PdfPCell(new Phrase(cellText, new Font(Font.FontFamily.HELVETICA, 8, 1, iTextSharp.text.BaseColor.BLACK)))
+            {
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                Padding = 5,
+                BackgroundColor = iTextSharp.text.BaseColor.WHITE
+            });
+        }
 
         public IActionResult DownloadFiles(string id)
         {
+          
+
             string contentType = "application/zip";
 
             List<CandidateFile> entityFiles = _context.CandidateFiles.Where(x => x.CandidateId == id).ToList();
